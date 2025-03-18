@@ -1,0 +1,119 @@
+---
+title: "Project_V1"
+format: 
+  html: 
+    embed-resources: true
+    code-fold: true
+editor: visual
+---
+
+```{r}
+#| message: false
+#| warning: false
+suppressPackageStartupMessages(library(readxl))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(plotly))
+
+data = read_excel("Project_1_Data.xlsx", sheet = "pooled123")
+
+filteredData = select(data, PID, BSSQ_1:BSSQ_16,ASSQ_1:ASSQ_16,age, VRexperience, ssq_modelled)
+
+withVRexperience = filter(filteredData, VRexperience == 'Yes')
+noVRexperience = filter(filteredData, VRexperience == 'No')
+
+#calculating differences between baseline and active SSQ for each symptom
+filteredData = mutate(filteredData, d_1 = ASSQ_1 - BSSQ_1)
+filteredData = mutate(filteredData, d_2 = ASSQ_2 - BSSQ_2)
+filteredData = mutate(filteredData, d_3 = ASSQ_3 - BSSQ_3)
+filteredData = mutate(filteredData, d_4 = ASSQ_4 - BSSQ_4)
+filteredData = mutate(filteredData, d_5 = ASSQ_5 - BSSQ_5)
+filteredData = mutate(filteredData, d_6 = ASSQ_6 - BSSQ_6)
+filteredData = mutate(filteredData, d_7 = ASSQ_7 - BSSQ_7)
+filteredData = mutate(filteredData, d_8 = ASSQ_8 - BSSQ_8)
+filteredData = mutate(filteredData, d_9 = ASSQ_9 - BSSQ_9)
+filteredData = mutate(filteredData, d_10 = ASSQ_10 - BSSQ_10)
+filteredData = mutate(filteredData, d_11 = ASSQ_11 - BSSQ_11)
+filteredData = mutate(filteredData, d_12 = ASSQ_12 - BSSQ_12)
+filteredData = mutate(filteredData, d_13 = ASSQ_13 - BSSQ_13)
+filteredData = mutate(filteredData, d_14 = ASSQ_14 - BSSQ_14)
+filteredData = mutate(filteredData, d_15 = ASSQ_15 - BSSQ_15)
+filteredData = mutate(filteredData, d_16 = ASSQ_16 - BSSQ_16)
+
+#reclasss VR experience as factor (was chr)
+filteredData$VRexperience = as.factor(filteredData$VRexperience)
+
+#we want to filter this data even further and split it into age groups
+#once in age groups, calculate the mean change for each of the age groups for each symptom
+
+filteredData = mutate(filteredData, age_group = case_when(
+  age >= 16 & age <= 21 ~ "16 to 21",
+  age >= 22 & age <= 29 ~ "22 to 29",
+  age >= 30 & age <= 37 ~ "30 to 37",
+  age >= 38 & age <= 45 ~ "38 to 45",
+  age > 45 ~ "above 45"
+))
+
+#convert the age groups into factors
+filteredData$age_group = as.factor(filteredData$age_group)
+str(filteredData)
+```
+
+## Initial Data Analysis (IDA)
+
+**Source**
+
+Our data was sourced from Cosette Saunder's PhD and honours thesis paper "[Socially Acquired Nocebo Effects Generalize but Are Not Attenuated by Choice](https://drive.google.com/file/d/1stc1Yj0-3ZDLqM31Mf-WKOIVdQYb4TkP/view)". (ask about how much context we need to provide here)
+
+**Structure**
+
+The data contained 336 records of participants in the study, each with 51 variables. In particular, our research focused the following variables:
+
+-   Baseline SSQ of 16 symptoms (quantitative*, discrete)*: self-reported symptom severity of participants before undergoing VR, on a scale of 1 to 10.
+
+-   Active SSQ of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity of participants after undergoing VR, on a scale of 1 to 10
+
+-   The age of the participants (quantitative*, discrete)*; they were then sorted into age groups – reclassed as 'factor' (*qualitative, ordinal)*
+
+    -   This was so that we could qualitatively class different ages and see their symptoms
+
+-   Whether the participant has had previous VR experience (*qualitative, nominal)*; this was reclassified from 'character' into 'factor'.
+
+    -   R misidentified this as 'chr', it should be a qualitative variable
+
+-   The change in active and baseline SSQ was calculated for each participant, each symptom (*quantitative, discrete)*.
+
+```{r}
+filteredData
+```
+
+```{r}
+library(RColorBrewer)
+
+data_experience = select(filteredData, VRexperience)
+exp_counted = data_experience %>% count(VRexperience)
+
+vr_pie = plot_ly(exp_counted, labels = ~VRexperience, values = ~n,
+                 type = 'pie')
+vr_pie <- vr_pie %>% layout(title = 'Distribution of VR experience',
+                            showlegend = TRUE)
+
+vr_pie
+```
+
+```{r}
+data_age_groups = select(filteredData, age_group)
+groups_counted = data_age_groups %>% count(age_group)
+
+age_pie = plot_ly(groups_counted, labels = ~age_group, values = ~n,
+                 type = 'pie')
+age_pie <- age_pie %>% layout(title = 'Distribution of ages',
+                            showlegend = TRUE)
+age_pie
+
+
+
+```
+
+**Limitations**
+
+**Assumptions**
