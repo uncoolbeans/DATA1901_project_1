@@ -4,6 +4,7 @@ format:
   html: 
     embed-resources: true
     code-fold: true
+    df_print: paged
 editor: visual
 ---
 
@@ -16,28 +17,27 @@ suppressPackageStartupMessages(library(plotly))
 
 data = read_excel("Project_1_Data.xlsx", sheet = "pooled123")
 
-filteredData = select(data, PID, BSSQ_1:BSSQ_16,ASSQ_1:ASSQ_16,age, VRexperience, ssq_modelled)
+filteredData = select(data, PID, BSSQ_1:BSSQ_15,ASSQ_1:ASSQ_15,age, VRexperience, ssq_modelled)
 
 withVRexperience = filter(filteredData, VRexperience == 'Yes')
 noVRexperience = filter(filteredData, VRexperience == 'No')
 
 #calculating differences between baseline and active SSQ for each symptom
-filteredData = mutate(filteredData, d_1 = ASSQ_1 - BSSQ_1)
-filteredData = mutate(filteredData, d_2 = ASSQ_2 - BSSQ_2)
-filteredData = mutate(filteredData, d_3 = ASSQ_3 - BSSQ_3)
-filteredData = mutate(filteredData, d_4 = ASSQ_4 - BSSQ_4)
-filteredData = mutate(filteredData, d_5 = ASSQ_5 - BSSQ_5)
-filteredData = mutate(filteredData, d_6 = ASSQ_6 - BSSQ_6)
-filteredData = mutate(filteredData, d_7 = ASSQ_7 - BSSQ_7)
-filteredData = mutate(filteredData, d_8 = ASSQ_8 - BSSQ_8)
-filteredData = mutate(filteredData, d_9 = ASSQ_9 - BSSQ_9)
-filteredData = mutate(filteredData, d_10 = ASSQ_10 - BSSQ_10)
-filteredData = mutate(filteredData, d_11 = ASSQ_11 - BSSQ_11)
-filteredData = mutate(filteredData, d_12 = ASSQ_12 - BSSQ_12)
-filteredData = mutate(filteredData, d_13 = ASSQ_13 - BSSQ_13)
-filteredData = mutate(filteredData, d_14 = ASSQ_14 - BSSQ_14)
-filteredData = mutate(filteredData, d_15 = ASSQ_15 - BSSQ_15)
-filteredData = mutate(filteredData, d_16 = ASSQ_16 - BSSQ_16)
+filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
+filteredData = mutate(filteredData, d_fatigue = ASSQ_2 - BSSQ_2)
+filteredData = mutate(filteredData, d_headache = ASSQ_3 - BSSQ_3)
+filteredData = mutate(filteredData, d_eyestrain = ASSQ_4 - BSSQ_4)
+filteredData = mutate(filteredData, d_difficulty_focusing = ASSQ_5 - BSSQ_5)
+filteredData = mutate(filteredData, d_salivation = ASSQ_6 - BSSQ_6)
+filteredData = mutate(filteredData, d_sweating = ASSQ_7 - BSSQ_7)
+filteredData = mutate(filteredData, d_nausea = ASSQ_8 - BSSQ_8)
+filteredData = mutate(filteredData, d_difficulty_concentrating = ASSQ_9 - BSSQ_9)
+filteredData = mutate(filteredData, d_fullness_of_head = ASSQ_10 - BSSQ_10)
+filteredData = mutate(filteredData, d_blurred_vision = ASSQ_11 - BSSQ_11)
+filteredData = mutate(filteredData, d_dizziness_o = ASSQ_12 - BSSQ_12)
+filteredData = mutate(filteredData, d_dizziness_c = ASSQ_13 - BSSQ_13)
+filteredData = mutate(filteredData, d_vertigo = ASSQ_14 - BSSQ_14)
+filteredData = mutate(filteredData, d_stomach_awareness = ASSQ_15 - BSSQ_15)
 
 #reclasss VR experience as factor (was chr)
 filteredData$VRexperience = as.factor(filteredData$VRexperience)
@@ -55,7 +55,44 @@ filteredData = mutate(filteredData, age_group = case_when(
 
 #convert the age groups into factors
 filteredData$age_group = as.factor(filteredData$age_group)
-str(filteredData)
+
+#renaming columns to be more informative
+names(filteredData)[names(filteredData) == 'BSSQ_1'] <- 'BSSQ_discomfort'
+names(filteredData)[names(filteredData) == 'BSSQ_2'] <- 'BSSQ_fatigue'
+names(filteredData)[names(filteredData) == 'BSSQ_3'] <- 'BSSQ_headache'
+names(filteredData)[names(filteredData) == 'BSSQ_4'] <- 'BSSQ_eyestrain'
+names(filteredData)[names(filteredData) == 'BSSQ_5'] <- 'BSSQ_difficulty_focusing'
+names(filteredData)[names(filteredData) == 'BSSQ_6'] <- 'BSSQ_salivation'
+names(filteredData)[names(filteredData) == 'BSSQ_7'] <- 'BSSQ_sweating'
+names(filteredData)[names(filteredData) == 'BSSQ_8'] <- 'BSSQ_nausea'
+names(filteredData)[names(filteredData) == 'BSSQ_9'] <- 'BSSQ_difficulty_concentrating'
+names(filteredData)[names(filteredData) == 'BSSQ_10'] <- 'BSSQ_fullness_of_head'
+names(filteredData)[names(filteredData) == 'BSSQ_11'] <- 'BSSQ_blurred_vision'
+names(filteredData)[names(filteredData) == 'BSSQ_12'] <- 'BSSQ_dizziness_o'
+names(filteredData)[names(filteredData) == 'BSSQ_13'] <- 'BSSQ_dizziness_c'
+names(filteredData)[names(filteredData) == 'BSSQ_14'] <- 'BSSQ_vertigo'
+names(filteredData)[names(filteredData) == 'BSSQ_15'] <- 'BSSQ_stomach_awareness'
+
+
+
+
+names(filteredData)[names(filteredData) == 'ASSQ_1'] <- 'ASSQ_discomfort'
+names(filteredData)[names(filteredData) == 'ASSQ_2'] <- 'ASSQ_fatigue'
+names(filteredData)[names(filteredData) == 'ASSQ_3'] <- 'ASSQ_headache'
+names(filteredData)[names(filteredData) == 'ASSQ_4'] <- 'ASSQ_eyestrain'
+names(filteredData)[names(filteredData) == 'ASSQ_5'] <- 'ASSQ_difficulty_focusing'
+names(filteredData)[names(filteredData) == 'ASSQ_6'] <- 'ASSQ_salivation'
+names(filteredData)[names(filteredData) == 'ASSQ_7'] <- 'ASSQ_sweating'
+names(filteredData)[names(filteredData) == 'ASSQ_8'] <- 'ASSQ_nausea'
+names(filteredData)[names(filteredData) == 'ASSQ_9'] <- 'ASSQ_difficulty_concentrating'
+names(filteredData)[names(filteredData) == 'ASSQ_10'] <- 'ASSQ_fullness_of_head'
+names(filteredData)[names(filteredData) == 'ASSQ_11'] <- 'ASSQ_blurred_vision'
+names(filteredData)[names(filteredData) == 'ASSQ_12'] <- 'ASSQ_dizziness_o'
+names(filteredData)[names(filteredData) == 'ASSQ_13'] <- 'ASSQ_dizziness_c'
+names(filteredData)[names(filteredData) == 'ASSQ_14'] <- 'ASSQ_vertigo'
+names(filteredData)[names(filteredData) == 'ASSQ_15'] <- 'ASSQ_stomach_awareness'
+
+
 ```
 
 ## Initial Data Analysis (IDA)
@@ -72,19 +109,15 @@ The data contained 336 records of participants in the study, each with 51 variab
 
 -   Active SSQ of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity of participants after undergoing VR, on a scale of 1 to 10
 
--   The age of the participants (quantitative*, discrete)*; they were then sorted into age groups – reclassed as 'factor' (*qualitative, ordinal)*
+-   The age of the participants (quantitative*, discrete)*; they were then sorted into age groups – re-classed as 'factor' (*qualitative, ordinal)*
 
-    -   This was so that we could qualitatively class different ages and see their symptoms
+    -   This was to allow the relationship between age groups and symptoms reported to be seen
 
 -   Whether the participant has had previous VR experience (*qualitative, nominal)*; this was reclassified from 'character' into 'factor'.
 
     -   R misidentified this as 'chr', it should be a qualitative variable
 
 -   The change in active and baseline SSQ was calculated for each participant, each symptom (*quantitative, discrete)*.
-
-```{r}
-filteredData
-```
 
 ```{r}
 library(RColorBrewer)
@@ -109,9 +142,6 @@ age_pie = plot_ly(groups_counted, labels = ~age_group, values = ~n,
 age_pie <- age_pie %>% layout(title = 'Distribution of ages',
                             showlegend = TRUE)
 age_pie
-
-
-
 ```
 
 **Limitations**
