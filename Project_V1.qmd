@@ -99,7 +99,7 @@ names(filteredData)[names(filteredData) == 'ASSQ_15'] <- 'ASSQ_stomach_awareness
 
 **Source**
 
-Our data was sourced from Cosette Saunder's PhD and honours thesis paper "[Socially Acquired Nocebo Effects Generalize but Are Not Attenuated by Choice](https://drive.google.com/file/d/1stc1Yj0-3ZDLqM31Mf-WKOIVdQYb4TkP/view)". (ask about how much context we need to provide here)
+Our data was sourced from Cosette Saunder's PhD and honors thesis paper "[Socially Acquired Nocebo Effects Generalize but Are Not Attenuated by Choice](https://drive.google.com/file/d/1stc1Yj0-3ZDLqM31Mf-WKOIVdQYb4TkP/view)". (ask about how much context we need to provide here)
 
 **Structure**
 
@@ -145,5 +145,7 @@ age_pie
 ```
 
 **Limitations**
+
+A limitation faced with this data set is the fact that the symptoms and their severity, for both baseline and active SSQs are self-reported, meaning that the interpretation of the scale can vary from person to person, making the reported values subjective and less reliable.
 
 **Assumptions**
