@@ -152,7 +152,7 @@ Our data was sourced from Cosette Saunder's PhD and honors thesis paper "[Social
 
 **Structure**
 
-The data contained 336 records of participants in the study, each with 51 variables. In particular, our project isolated and focused the following variables:
+The data contained 336 records of participants in the study, each with 51 variables. In particular, our project focused the following variables:
 
 -   Baseline SSQ (`BSSQ`) of 16 symptoms (quantitative*, discrete)*: self-reported symptom severity of participants before undergoing VR, on a scale of 1 to 10.
 
