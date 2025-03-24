@@ -138,6 +138,19 @@ grp3 = filter(filteredData, age_group == '30 to 37')
 grp4 = filter(filteredData, age_group == '38 to 45')
 grp5 = filter(filteredData, age_group == 'above 45')
 
+mean_sqq_ages = c(mean(grp1$ssq_full),
+                  mean(grp2$ssq_full),
+                  mean(grp3$ssq_full),
+                  mean(grp4$ssq_full),
+                  mean(grp5$ssq_full)
+                  )
+
+data_by_age_group = data.frame(
+  age_group = c("16 to 21", '22 to 29','30 to 37','38 to 45','Above 45'),
+  mean_ssq = mean_sqq_ages
+  
+)
+
 ```
 
 ## Summary of Findings
@@ -277,6 +290,7 @@ fig
 
 ```{r}
 library(plotly)
+library(tidyselect)
 
 mean_sqq_ages = c(mean(grp1$ssq_full),
                   mean(grp2$ssq_full),
@@ -300,13 +314,20 @@ fig2 <- fig2 %>%
     polar = list(
       radialaxis = list(
         visible = T,
-        range = c(-5,20)
+        range = c(0,20)
       )
     ),
     showlegend = T
   )
 
 fig2
+
+fig3 = ggplot(data_by_age_group, aes(x = age_group, y = mean_ssq)) +
+  geom_bar(stat = 'identity')
+
+
+
+ggplotly(fig3)
 ```
 
 ```{r}
@@ -316,4 +337,18 @@ p = ggplot(filteredData, aes(x = age, y = ssq_full, colour = VRexperience)) +
   geom_point()
 
 p
+```
+
+```{r}
+plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full)) +
+  geom_boxplot()
+
+ggplotly(plt)
+```
+
+```{r}
+plt2 = ggplot(filteredData, aes(x = age_group, y = ssq_full)) +
+  geom_boxplot()
+
+ggplotly(plt2)
 ```
