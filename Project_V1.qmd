@@ -165,7 +165,7 @@ Our data was sourced from Cosette Saunder's PhD and honors thesis paper "[Social
 
 **Structure**
 
-The data contained 336 records of participants in the study, each with 51 variables. In particular, our project focused the following variables:
+The data contains 336 records of participants in the study, each with 51 variables. In particular, our project focused the following variables:
 
 -   Baseline SSQ (`BSSQ`) of 16 symptoms (quantitative*, discrete)*: self-reported symptom severity of participants before undergoing VR, on a scale of 1 to 10.
 
@@ -221,6 +221,10 @@ Another limitation is that VR experience is simply classified by a 'yes' or 'no'
 **Assumptions**
 
 We assumed that the participants were truthful and correct about whether or not they have participated in VR before. We also assumed that the participants followed the instructions in the symptoms survey correctly and reported their symptoms on a scale of 1 to 10, with 1 being the least severe and 10 being the most.
+
+# Research Question
+
+## **What is the effect of having VR experience on the symptoms experienced by people?**
 
 ```{r}
 #| message: false
@@ -287,6 +291,8 @@ fig <- fig %>%
 
 fig
 ```
+
+We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ in most symptoms. Interestingly, those with VR experience seem to report a higher
 
 ```{r}
 library(plotly)
