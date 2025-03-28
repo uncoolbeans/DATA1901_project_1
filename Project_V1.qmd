@@ -18,7 +18,7 @@ suppressPackageStartupMessages(library(fmsb))
 
 data = read_excel("Project_1_Data.xlsx", sheet = "pooled123")
 
-filteredData = select(data, PID, BSSQ_1:BSSQ_15, ASSQ_1:ASSQ_15, age, VRexperience, ssq_full)
+filteredData = select(data, Date, PID, BSSQ_1:BSSQ_15, ASSQ_1:ASSQ_15, age, VRexperience, ssq_full)
 
 #calculating differences between baseline and active SSQ for each symptom
 filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
@@ -379,4 +379,23 @@ filteredData = mutate(filteredData, age_class = case_when(age > q3 ~ "older",
                                                       age > 0 ~ "younger"))
 
 ggplot(filter(filteredData, age_class == "old" | age_class == "young"), aes(x = age_class, y = ssq_full)) + geom_boxplot()
+```
+
+```{r}
+filteredData["age_group"] = cut(filteredData$age, c(16, 22, 30, 38, 46, Inf), c("16-21", "22-29", "30-37", "38-45", "45+"), include.lowest = TRUE)
+
+ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) + stat_summary(fun = "mean", geom = "bar", position = "dodge")
+```
+
+```{r}
+library(lubridate)
+
+class(filteredData$Date[1])
+d = filteredData$Date[1] |> as.POSIXct()
+year(d) # used chatgpt for this because there is no known website in the universe that has this information for SOME REASON
+
+filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >= 2010 ~ "a", year(Date) - age >= 1997 ~ "z", year(Date) - age >= 1981 ~ "y", year(Date) - age >= 1965 ~ "x", TRUE ~ "old"))
+
+ggplot(filteredData, aes(x = generation, y = ssq_full)) + geom_boxplot()
+ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_point()
 ```
