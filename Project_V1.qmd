@@ -18,7 +18,7 @@ suppressPackageStartupMessages(library(fmsb))
 
 data = read_excel("Project_1_Data.xlsx", sheet = "pooled123")
 
-filteredData = select(data, PID, BSSQ_1:BSSQ_15,ASSQ_1:ASSQ_15,age, VRexperience, ssq_full)
+filteredData = select(data, PID, BSSQ_1:BSSQ_15, ASSQ_1:ASSQ_15, age, VRexperience, ssq_full)
 
 #calculating differences between baseline and active SSQ for each symptom
 filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
@@ -216,7 +216,7 @@ vr_pie
 
 A limitation faced with this data set is the fact that the symptoms and their severity, for both baseline and active SSQs are self-reported, meaning that the interpretation of the scale can vary from person to person, making the reported values subjective and less reliable.
 
-Another limitation is that VR experience is simply classified by a 'yes' or 'no', which is not very descriptive of how much exposure to VR the participant has had in the past, or how recent that experience was.
+Another limitation is that VR experience is simply classified by a 'yes' or 'no', which is not very descriptive of how much exposure to VR the participant has had in the past, or how recent that experience was. However, it was mentioned that participants who had used VR more than 10 times were excluded from the study.
 
 **Assumptions**
 
@@ -292,7 +292,7 @@ fig <- fig %>%
 fig
 ```
 
-We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ in most symptoms. Interestingly, those with VR experience seem to report a higher
+We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, those with VR experience seem to report a greater increase in most symptoms when compared to those without VR experience.
 
 ```{r}
 library(plotly)
@@ -357,4 +357,26 @@ plt2 = ggplot(filteredData, aes(x = age_group, y = ssq_full)) +
   geom_boxplot()
 
 ggplotly(plt2)
+```
+
+```{r}
+#| warning: false
+library(tidyverse)
+
+yex = filter(filteredData, VRexperience == "Yes")
+nox = filter(filteredData, VRexperience == "No")
+
+q1 = quantile(yex$age, probs = c(0.25), na.rm = TRUE) |> as.numeric()
+q2 = quantile(nox$age, probs = c(0.25), na.rm = TRUE) |> as.numeric()
+# https://forum.posit.co/t/make-the-r-function-quantile-return-a-numeric-value/178084
+q3 = 2*q2-q1
+
+ggplot(filteredData, aes(x = VRexperience, y = age)) + geom_boxplot() + geom_hline(yintercept = q1) + geom_hline(yintercept = q2) + geom_hline(yintercept = q3)
+
+filteredData = mutate(filteredData, age_class = case_when(age > q3 ~ "older",
+                                                      age > q2 ~ "old",
+                                                      age > q1 ~ "young",
+                                                      age > 0 ~ "younger"))
+
+ggplot(filter(filteredData, age_class == "old" | age_class == "young"), aes(x = age_class, y = ssq_full)) + geom_boxplot()
 ```
