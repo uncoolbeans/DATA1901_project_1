@@ -214,9 +214,9 @@ vr_pie
 
 **Limitations**
 
-A limitation faced with this data set is the fact that the symptoms and their severity, for both baseline and active SSQs are self-reported, meaning that the interpretation of the scale can vary from person to person, making the reported values subjective and less reliable.
+A limitation faced with this data set is the fact that the symptoms and their severity, for both `BSSQ` and `ASSQ` are self-reported, meaning that the interpretation of the scale can vary from person to person, making the reported values subjective and less reliable.
 
-Another limitation is that VR experience is simply classified by a 'yes' or 'no', which is not very descriptive of how much exposure to VR the participant has had in the past, or how recent that experience was. However, it was mentioned that participants who had used VR more than 10 times were excluded from the study.
+Another limitation is that VR experience is simply classified by a 'yes' or 'no', which is not a descriptive measure of the amount, frequency or how recently they used VR, which could be confounding factors. However, it was mentioned that participants who had used VR more than 10 times were excluded from the study.
 
 **Assumptions**
 
@@ -242,7 +242,10 @@ yes_means = c(yes_avg_d_discomfort,
               yes_avg_d_difficulty_focusing,
               yes_avg_d_difficulty_concentrating,
               yes_avg_d_salivation,
-              no_avg_d_vision
+              yes_avg_d_vision,
+              yes_avg_d_vertigo,
+              yes_avg_d_stomach,
+              yes_avg_d_fullness
               )
 
 no_means = c(no_avg_d_discomfort,
@@ -256,7 +259,10 @@ no_means = c(no_avg_d_discomfort,
              no_avg_d_difficulty_focusing,
              no_avg_d_difficulty_concentrating,
              no_avg_d_salivation,
-             no_avg_d_vision
+             no_avg_d_vision,
+             no_avg_d_vertigo,
+             no_avg_d_stomach,
+             no_avg_d_fullness
              )
 
 fig <- plot_ly(
@@ -267,14 +273,14 @@ fig <- plot_ly(
 fig <- fig %>% 
   add_trace(
     r = yes_means,
-    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea', 'Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision'),
+    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea', 'Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision', 'Vertigo', 'Stomach Awareness', 'Fullness of head'),
     name = 'With VR Experience'
   )
 
 fig <- fig %>% 
   add_trace(
     r = no_means,
-    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea','Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision'),
+    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea','Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision',  'Vertigo', 'Stomach Awareness', 'Fullness of head'),
     name = 'No VR Experience'
   )
 
@@ -293,6 +299,8 @@ fig
 ```
 
 We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, those with VR experience seem to report a greater increase in most symptoms when compared to those without VR experience.
+
+We look further into those symptoms with the greatest $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`
 
 ```{r}
 library(plotly)
