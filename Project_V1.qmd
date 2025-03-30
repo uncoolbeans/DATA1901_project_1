@@ -42,7 +42,6 @@ filteredData$VRexperience = as.factor(filteredData$VRexperience)
 
 #we want to filter this data even further and split it into age groups
 #once in age groups, calculate the mean change for each of the age groups for each symptom
-
 filteredData = mutate(filteredData, age_group = case_when(
   age >= 16 & age <= 21 ~ "16 to 21",
   age >= 22 & age <= 29 ~ "22 to 29",
@@ -161,25 +160,19 @@ data_by_age_group = data.frame(
 
 **Source**
 
-Our data was sourced from Cosette Saunder's PhD and honors thesis paper "[Socially Acquired Nocebo Effects Generalize but Are Not Attenuated by Choice](https://drive.google.com/file/d/1stc1Yj0-3ZDLqM31Mf-WKOIVdQYb4TkP/view)". (ask about how much context we need to provide here)
+Our data was sourced from Cosette Saunder's paper "[Socially Acquired Nocebo Effects Generalize but Are Not Attenuated by Choice](https://drive.google.com/file/d/1stc1Yj0-3ZDLqM31Mf-WKOIVdQYb4TkP/view)".
 
 **Structure**
 
-The data contains 336 records of participants in the study, each with 51 variables. In particular, our project focused the following variables:
+The paper included 336 participants, each with 51 variables recorded. Our project focused the following variables:
 
--   Baseline SSQ (`BSSQ`) of 16 symptoms (quantitative*, discrete)*: self-reported symptom severity of participants before undergoing VR, on a scale of 1 to 10.
+-   Baseline SSQ (`BSSQ`) and Active SSQ (`ASSQ`) of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity before and after undergoing VR respectively, on a scale of 1 to 10.
 
--   Active SSQ (`ASSQ`) of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity of participants after undergoing VR, on a scale of 1 to 10
+-   Participants' `VRexperience` (*qualitative, nominal)*; sorted by experience to see how symptoms differed.
 
--   The `age` of the participants (quantitative*, discrete)*; they were then sorted into age groups – re-classed as 'factor' (*qualitative, ordinal)*
+-   `age` of participants (quantitative*, discrete)*; they were then sorted into age groups.
 
-    -   This was to allow the relationship between age groups and symptoms reported to be seen
-
--   Whether the participant has had `VRexperience` (*qualitative, nominal)*; this was reclassified from 'character' into 'factor'.
-
-    -   R misidentified this as 'chr', it should be a qualitative variable
-
--   The change ($\Delta$) between baseline (before) and active (after) SSQ was calculated for each participant for each symptom, and now we take the average $\Delta$ for each symptom for each group. (*quantitative, discrete)*
+-   The change ($\Delta$) between `BSSQ` and `ASSQ` was calculated for each participant for each symptom, and we took the average $\Delta$ for each symptom for each group (*quantitative, discrete).*
 
 ::: panel-tabset
 ## Age Groups
@@ -214,13 +207,13 @@ vr_pie
 
 **Limitations**
 
-A limitation faced with this data set is the fact that the symptoms and their severity, for both `BSSQ` and `ASSQ` are self-reported, meaning that the interpretation of the scale can vary from person to person, making the reported values subjective and less reliable.
+A limitation faced is *self-reporting bias* for both `BSSQ` and `ASSQ` which makes the values prone to being over or underestimates, and each participant may interpret the scale differently.
 
-Another limitation is that VR experience is simply classified by a 'yes' or 'no', which is not a descriptive measure of the amount, frequency or how recently they used VR, which could be confounding factors. However, it was mentioned that participants who had used VR more than 10 times were excluded from the study.
+Another limitation is that `VRexperience` is simply classified by a 'yes' or 'no', which is not a descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
 **Assumptions**
 
-We assumed that the participants were truthful and correct about whether or not they have participated in VR before. We also assumed that the participants followed the instructions in the symptoms survey correctly and reported their symptoms on a scale of 1 to 10, with 1 being the least severe and 10 being the most.
+We assumed that the participants were truthful and correct about whether or not their VR experience and that they correctly reported their symptoms with 1 being the least severe and 10 being the most.
 
 # Research Question
 
@@ -300,7 +293,90 @@ fig
 
 We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, those with VR experience seem to report a greater increase in most symptoms when compared to those without VR experience.
 
-We look further into those symptoms with the greatest $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`
+We look further into those symptoms with the greatest $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
+
+::: panel-tabset
+## Dizziness
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = VRexperience, y = d_dizziness_c)) +
+  geom_boxplot() +
+  labs(x = "VR Experience",  y = "Dizziness (Eyes Closed)")
+
+ggplotly(plt)
+
+fivenum(withVRexperience$d_dizziness_c)
+fivenum(noVRexperience$d_dizziness_c)
+
+mean(withVRexperience$d_dizziness_c)
+mean(noVRexperience$d_dizziness_c)
+
+sd(withVRexperience$d_dizziness_c)
+sd(noVRexperience$d_dizziness_c)
+
+
+#since from the boxplots we can see that both sets have a fair number of outliers which could affect the mean, the median + IQR may be a better measure of spread
+
+```
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+library(gganimate)
+library(gifski)
+
+plt = ggplot(filteredData, aes(y = d_dizziness_c, x = age, colour = VRexperience)) +
+  geom_point() +
+  labs(x = "VR Experience",  y = "Dizziness (Eyes Closed)", col = "VR Experience") +
+  transition_states(VRexperience, transition_length = 1, state_length = 1) +
+  enter_fade() + exit_fade()
+
+#animate(plt, renderer = gifski_renderer())
+ggplotly(plt)
+```
+
+## Vertigo
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = VRexperience, y = d_vertigo)) +
+  geom_boxplot() +
+  labs(x = "VR Experience",  y = "Vertigo")
+
+ggplotly(plt)
+
+fivenum(withVRexperience$d_vertigo)
+fivenum(noVRexperience$d_vertigo)
+
+mean(withVRexperience$d_vertigo)
+mean(noVRexperience$d_vertigo)
+
+sd(withVRexperience$d_vertigo)
+sd(noVRexperience$d_vertigo)
+```
+
+## Stomach Awareness
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = VRexperience, y = d_stomach_awareness)) +
+  geom_boxplot() +
+  labs(x = "VR Experience",  y = "Stomach Awareness")
+
+ggplotly(plt)
+```
+:::
 
 ```{r}
 library(plotly)
@@ -407,3 +483,9 @@ filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >=
 ggplot(filteredData, aes(x = generation, y = ssq_full)) + geom_boxplot()
 ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_point()
 ```
+
+# Professional Standard of Report
+
+# Acknowledgements
+
+# References 
