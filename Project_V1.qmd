@@ -18,7 +18,7 @@ suppressPackageStartupMessages(library(fmsb))
 
 data = read_excel("Project_1_Data.xlsx", sheet = "pooled123")
 
-filteredData = select(data, Date, PID, BSSQ_1:BSSQ_15, ASSQ_1:ASSQ_15, age, VRexperience, ssq_full)
+filteredData = select(data, Date, PID, BSSQ_1:BSSQ_16, ASSQ_1:ASSQ_16, age, VRexperience, ssq_full)
 
 #calculating differences between baseline and active SSQ for each symptom
 filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
@@ -36,6 +36,8 @@ filteredData = mutate(filteredData, d_dizziness_o = ASSQ_12 - BSSQ_12)
 filteredData = mutate(filteredData, d_dizziness_c = ASSQ_13 - BSSQ_13)
 filteredData = mutate(filteredData, d_vertigo = ASSQ_14 - BSSQ_14)
 filteredData = mutate(filteredData, d_stomach_awareness = ASSQ_15 - BSSQ_15)
+filteredData = mutate(filteredData, d_burping = ASSQ_16 - BSSQ_16)
+
 
 #reclasss VR experience as factor (was chr)
 filteredData$VRexperience = as.factor(filteredData$VRexperience)
@@ -166,7 +168,7 @@ Our data was sourced from Cosette Saunder's paper "[Socially Acquired Nocebo Eff
 
 The paper included 336 participants, each with 51 variables recorded. Our project focused the following variables:
 
--   Baseline SSQ (`BSSQ`) and Active SSQ (`ASSQ`) of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity before and after undergoing VR respectively, on a scale of 1 to 10.
+-   Baseline SSQ (`BSSQ`), Active SSQ (`ASSQ`), and `SSQ_Full`of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity before and after undergoing VR respectively, on a scale of 1 to 10.
 
 -   Participants' `VRexperience` (*qualitative, nominal)*; sorted by experience to see how symptoms differed.
 
@@ -297,6 +299,17 @@ fig
 We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, those with VR experience seem to report a greater increase in most symptoms when compared to those without VR experience.
 
 We look further into those symptoms with the greatest differences in mean $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full)) +
+  geom_boxplot() +
+  labs(x = "VR Experience",  y = "Full SSQ")
+
+ggplotly(plt)
+```
 
 ::: panel-tabset
 ## Dizziness
