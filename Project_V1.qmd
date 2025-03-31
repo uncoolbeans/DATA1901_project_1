@@ -178,6 +178,7 @@ The paper included 336 participants, each with 51 variables recorded. Our projec
 ## Age Groups
 
 ```{r}
+#| label: Age groups pie chart
 data_age_groups = select(filteredData, age_group)
 groups_counted = data_age_groups %>% count(age_group)
 
@@ -191,6 +192,7 @@ age_pie
 ## VR Experience
 
 ```{r}
+#| label: VR experience pie chart
 library(RColorBrewer)
 
 data_experience = select(filteredData, VRexperience)
@@ -220,6 +222,7 @@ We assumed that the participants were truthful and correct about whether or not 
 ## **What is the effect of having VR experience on the symptoms experienced by people?**
 
 ```{r}
+#| label: Experience and symptoms spider chart
 #| message: false
 #| warning: false
 library(plotly)
@@ -293,29 +296,30 @@ fig
 
 We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, those with VR experience seem to report a greater increase in most symptoms when compared to those without VR experience.
 
-We look further into those symptoms with the greatest $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
+We look further into those symptoms with the greatest differences in mean $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
 
 ::: panel-tabset
 ## Dizziness
 
 ```{r}
+#| label: Dizziness Boxplot 
 library(tidyverse)
 library(plotly)
 
 plt = ggplot(filteredData, aes(x = VRexperience, y = d_dizziness_c)) +
   geom_boxplot() +
-  labs(x = "VR Experience",  y = "Dizziness (Eyes Closed)")
+  labs(x = "VR Experience",  y = "Change in BSSQ and ASSQ-Dizziness (Eyes Closed)")
 
 ggplotly(plt)
 
-fivenum(withVRexperience$d_dizziness_c)
-fivenum(noVRexperience$d_dizziness_c)
-
-mean(withVRexperience$d_dizziness_c)
-mean(noVRexperience$d_dizziness_c)
-
-sd(withVRexperience$d_dizziness_c)
-sd(noVRexperience$d_dizziness_c)
+#fivenum(withVRexperience$d_dizziness_c)
+#fivenum(noVRexperience$d_dizziness_c)
+#
+#mean(withVRexperience$d_dizziness_c)
+#mean(noVRexperience$d_dizziness_c)
+#
+#sd(withVRexperience$d_dizziness_c)
+#sd(noVRexperience$d_dizziness_c)
 
 
 #since from the boxplots we can see that both sets have a fair number of outliers which could affect the mean, the median + IQR may be a better measure of spread
@@ -323,6 +327,7 @@ sd(noVRexperience$d_dizziness_c)
 ```
 
 ```{r}
+#| label: Dizziness Scatterplot
 #| message: false
 #| warning: false
 library(tidyverse)
@@ -332,7 +337,7 @@ library(gifski)
 
 plt = ggplot(filteredData, aes(y = d_dizziness_c, x = age, colour = VRexperience)) +
   geom_point() +
-  labs(x = "VR Experience",  y = "Dizziness (Eyes Closed)", col = "VR Experience") +
+  labs(x = "Age",  y = "Dizziness (Eyes Closed)", col = "VR Experience") +
   transition_states(VRexperience, transition_length = 1, state_length = 1) +
   enter_fade() + exit_fade()
 
@@ -340,9 +345,23 @@ plt = ggplot(filteredData, aes(y = d_dizziness_c, x = age, colour = VRexperience
 ggplotly(plt)
 ```
 
+```{r}
+#| label: Age groups for dizziness boxplot
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = age_group, y = d_dizziness_c)) +
+  geom_boxplot() +
+  labs(x = "Age Group",  y = "Change in BSSQ and ASSQ-Dizziness(Eyes Closed)")
+
+ggplotly(plt)
+
+```
+
 ## Vertigo
 
 ```{r}
+#| label: Vertigo boxplot
 library(tidyverse)
 library(plotly)
 
@@ -352,19 +371,51 @@ plt = ggplot(filteredData, aes(x = VRexperience, y = d_vertigo)) +
 
 ggplotly(plt)
 
-fivenum(withVRexperience$d_vertigo)
-fivenum(noVRexperience$d_vertigo)
+#fivenum(withVRexperience$d_vertigo)
+#fivenum(noVRexperience$d_vertigo)
+#
+#mean(withVRexperience$d_vertigo)
+#mean(noVRexperience$d_vertigo)
+#
+#sd(withVRexperience$d_vertigo)
+#sd(noVRexperience$d_vertigo)
+```
 
-mean(withVRexperience$d_vertigo)
-mean(noVRexperience$d_vertigo)
+```{r}
+#| label: Age groups for vertigo boxplot
+library(tidyverse)
+library(plotly)
 
-sd(withVRexperience$d_vertigo)
-sd(noVRexperience$d_vertigo)
+plt = ggplot(filteredData, aes(x = age_group, y = d_vertigo)) +
+  geom_boxplot() +
+  labs(x = "Age Group",  y = "Change in BSSQ and ASSQ - Vertigo")
+
+ggplotly(plt)
+```
+
+```{r}
+#| label: Vertigo Scatterplot
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+library(gganimate)
+library(gifski)
+
+plt = ggplot(filteredData, aes(y = d_vertigo, x = age, colour = VRexperience)) +
+  geom_point() +
+  labs(x = "Age",  y = "Vertigo", col = "VR Experience") +
+  transition_states(VRexperience, transition_length = 1, state_length = 1) +
+  enter_fade() + exit_fade()
+
+#animate(plt, renderer = gifski_renderer())
+ggplotly(plt)
 ```
 
 ## Stomach Awareness
 
 ```{r}
+#| label: Stomach_awareness boxplot
 #| message: false
 #| warning: false
 library(tidyverse)
@@ -372,8 +423,40 @@ library(plotly)
 
 plt = ggplot(filteredData, aes(x = VRexperience, y = d_stomach_awareness)) +
   geom_boxplot() +
-  labs(x = "VR Experience",  y = "Stomach Awareness")
+  labs(x = "VR Experience",  y = "Change in BSSQ and ASSQ - Stomach Awareness")
 
+ggplotly(plt)
+
+```
+
+```{r}
+#| label: Age groups for stomach awareness boxplot
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = age_group, y = d_stomach_awareness)) +
+  geom_boxplot() +
+  labs(x = "Age Group",  y = "Change in BSSQ and ASSQ - Stomach Awareness")
+
+ggplotly(plt)
+```
+
+```{r}
+#| label: Stomach Awareness Scatterplot
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+library(gganimate)
+library(gifski)
+
+plt = ggplot(filteredData, aes(y = d_stomach_awareness, x = age, colour = VRexperience)) +
+  geom_point() +
+  labs(x = "Age",  y = "Stomach Awareness", col = "VR Experience") +
+  transition_states(VRexperience, transition_length = 1, state_length = 1) +
+  enter_fade() + exit_fade()
+
+#animate(plt, renderer = gifski_renderer())
 ggplotly(plt)
 ```
 :::
@@ -488,4 +571,4 @@ ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_poin
 
 # Acknowledgements
 
-# References 
+# References
