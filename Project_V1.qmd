@@ -179,9 +179,9 @@ The paper included 336 participants, each with 51 variables recorded. Our projec
 
 -   Participants' `VRexperience` (*qualitative, nominal)*; sorted by experience to see how symptoms differed.
 
--   `age` of participants (quantitative*, discrete)*; they were then sorted into age groups.
+-   `age` of participants (quantitative*, discrete)*; they were then sorted into `age groups`.
 
--   The change ($\Delta$) between `BSSQ` and `ASSQ` was calculated for each participant for each symptom, and we took the average $\Delta$ for each symptom for each group (*quantitative, discrete).*
+-   The change ($\Delta$) between `BSSQ` and `ASSQ` was calculated for each participant for each symptom, and we took the average $\Delta$ for each symptom for each group (`VRexperience` and `age_group`) (*quantitative, discrete).*
 
 ::: panel-tabset
 ## Age Groups
@@ -218,13 +218,9 @@ vr_pie
 
 **Limitations**
 
-A limitation faced is *self-reporting bias* for both `BSSQ` and `ASSQ` which makes the values prone to being over or underestimates, and each participant may interpret the scale differently.
+-    *Self-reporting bias* for both `BSSQ` and `ASSQ` which makes the values prone to being over or underestimates by each participant.
 
-Another limitation is that `VRexperience` is simply classified by a 'yes' or 'no', which is not a descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
-
-**Assumptions**
-
-We assumed that the participants were truthful and correct about whether or not their VR experience and that they correctly reported their symptoms with 1 being the least severe and 10 being the most.
+-   `VRexperience` is a binary qualitative classification, it is not descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
 # Research Question
 
