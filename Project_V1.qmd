@@ -71,6 +71,8 @@ names(filteredData)[names(filteredData) == 'BSSQ_12'] <- 'BSSQ_dizziness_o'
 names(filteredData)[names(filteredData) == 'BSSQ_13'] <- 'BSSQ_dizziness_c'
 names(filteredData)[names(filteredData) == 'BSSQ_14'] <- 'BSSQ_vertigo'
 names(filteredData)[names(filteredData) == 'BSSQ_15'] <- 'BSSQ_stomach_awareness'
+names(filteredData)[names(filteredData) == 'BSSQ_16'] <- 'BSSQ_burping'
+
 
 
 
@@ -90,6 +92,8 @@ names(filteredData)[names(filteredData) == 'ASSQ_12'] <- 'ASSQ_dizziness_o'
 names(filteredData)[names(filteredData) == 'ASSQ_13'] <- 'ASSQ_dizziness_c'
 names(filteredData)[names(filteredData) == 'ASSQ_14'] <- 'ASSQ_vertigo'
 names(filteredData)[names(filteredData) == 'ASSQ_15'] <- 'ASSQ_stomach_awareness'
+names(filteredData)[names(filteredData) == 'ASSQ_16'] <- 'ASSQ_burping'
+
 
 #isolating the data dictionary
 data_dict = read_excel("Project_1_Data.xlsx", sheet = "data_dictionary")
@@ -114,6 +118,7 @@ yes_avg_d_dizziness_o = mean(withVRexperience$d_dizziness_o)
 yes_avg_d_dizziness_c = mean(withVRexperience$d_dizziness_c)
 yes_avg_d_vertigo = mean(withVRexperience$d_vertigo)
 yes_avg_d_stomach = mean(withVRexperience$d_stomach_awareness)
+yes_avg_d_burping = mean(withVRexperience$d_burping)
 
 
 no_avg_d_discomfort = mean(noVRexperience$d_discomfort)
@@ -131,6 +136,8 @@ no_avg_d_dizziness_o = mean(noVRexperience$d_dizziness_o)
 no_avg_d_dizziness_c = mean(noVRexperience$d_dizziness_c)
 no_avg_d_vertigo = mean(noVRexperience$d_vertigo)
 no_avg_d_stomach = mean(noVRexperience$d_stomach_awareness)
+no_avg_d_burping = mean(noVRexperience$d_burping)
+
 
 #taking averages for different age groups
 grp1 = filter(filteredData, age_group == '16 to 21')
@@ -243,7 +250,8 @@ yes_means = c(yes_avg_d_discomfort,
               yes_avg_d_vision,
               yes_avg_d_vertigo,
               yes_avg_d_stomach,
-              yes_avg_d_fullness
+              yes_avg_d_fullness,
+              yes_avg_d_burping
               )
 
 no_means = c(no_avg_d_discomfort,
@@ -260,7 +268,8 @@ no_means = c(no_avg_d_discomfort,
              no_avg_d_vision,
              no_avg_d_vertigo,
              no_avg_d_stomach,
-             no_avg_d_fullness
+             no_avg_d_fullness,
+             no_avg_d_burping
              )
 
 fig <- plot_ly(
@@ -271,14 +280,14 @@ fig <- plot_ly(
 fig <- fig %>% 
   add_trace(
     r = yes_means,
-    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea', 'Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision', 'Vertigo', 'Stomach Awareness', 'Fullness of head'),
+    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea', 'Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision', 'Vertigo', 'Stomach Awareness', 'Fullness of head','Burping'),
     name = 'With VR Experience'
   )
 
 fig <- fig %>% 
   add_trace(
     r = no_means,
-    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea','Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision',  'Vertigo', 'Stomach Awareness', 'Fullness of head'),
+    theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea','Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision',  'Vertigo', 'Stomach Awareness', 'Fullness of head','Burping'),
     name = 'No VR Experience'
   )
 
