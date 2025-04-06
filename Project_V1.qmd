@@ -225,9 +225,9 @@ vr_pie
 
 -   `VRexperience` is a binary qualitative classification, it is not descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
-# Research Question
+# [Research Question]{.underline}
 
-## **What is the effect of having VR experience on the symptoms experienced by people?**
+## **What is the effect of past VR experience on the symptoms experienced by people?**
 
 ```{r}
 #| label: Boxplot of full_ssq vs experience
