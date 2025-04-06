@@ -398,48 +398,6 @@ ggplotly(plt)
 :::
 
 ```{r}
-library(plotly)
-library(tidyselect)
-
-mean_sqq_ages = c(mean(grp1$ssq_full),
-                  mean(grp2$ssq_full),
-                  mean(grp3$ssq_full),
-                  mean(grp4$ssq_full),
-                  mean(grp5$ssq_full)
-                  )
-
-fig2 <- plot_ly(
-  type = 'scatterpolar',
-  fill = 'toself',
-  r = mean_sqq_ages,
-  theta = c("16 to 21",
-            "22 to 29",
-            "30 to 37",
-            "38 to 45",
-            "above 45")
-)
-fig2 <- fig2 %>%
-  layout(
-    polar = list(
-      radialaxis = list(
-        visible = T,
-        range = c(0,20)
-      )
-    ),
-    showlegend = T
-  )
-
-fig2
-
-fig3 = ggplot(data_by_age_group, aes(x = age_group, y = mean_ssq)) +
-  geom_bar(stat = 'identity')
-
-
-
-ggplotly(fig3)
-```
-
-```{r}
 library(tidyverse)
 
 p = ggplot(filteredData, aes(x = age, y = ssq_full, colour = VRexperience)) +
@@ -491,17 +449,6 @@ ggplot(filter(filteredData, age_class == "old" | age_class == "young"), aes(x = 
 filteredData["age_group"] = cut(filteredData$age, c(16, 22, 30, 38, 46, Inf), c("16-21", "22-29", "30-37", "38-45", "45+"), include.lowest = TRUE)
 
 ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) + stat_summary(fun = "mean", geom = "bar", position = "dodge")
-```
-
-```{r}
-library(lubridate)
-
-class(filteredData$Date[1])
-d = filteredData$Date[1] |> as.POSIXct()
-year(d) # used chatgpt for this because there is no known website in the universe that has this information for SOME REASON
-
-ggplot(filteredData, aes(x = generation, y = ssq_full)) + geom_boxplot()
-ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_point()
 ```
 
 ```{r}
