@@ -177,7 +177,7 @@ Our data was sourced from Cosette Saunder's paper "[Socially Acquired Nocebo Eff
 
 **Structure**
 
-The paper included 336 participants, each with 51 variables recorded. Our project focused the following variables:
+We specifically looked at participants that did not undego any social modelling; 69 participants, each with 51 variables recorded. Our project focused the following variables:
 
 -   Baseline SSQ (`BSSQ`), Active SSQ (`ASSQ`), and `SSQ_Full`of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity before and after undergoing VR respectively, on a scale of 1 to 10.
 
@@ -228,6 +228,20 @@ vr_pie
 # Research Question
 
 ## **What is the effect of having VR experience on the symptoms experienced by people?**
+
+```{r}
+#| label: Boxplot of full_ssq vs experience
+#| message: false
+#| warning: false
+
+plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "VR Experience", y = "Full SSQ")
+ggplotly(plt)
+```
+
+Those with and without VR experience reported varied severity of symptoms. Interestingly, the VR experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating those with experience reported more severe symptoms afterwards. VR experienced participants also showed a greater IQR than those without, at 16.25 and 8.5 respectively, pointing to experienced users reporting less consistent symptom severity.
 
 ```{r}
 #| label: Experience and symptoms spider chart
@@ -305,9 +319,9 @@ fig <- fig %>%
 fig
 ```
 
-When took the average change between the `BSSQ` and `ASSQ`, and visualized it in the spiderchart. We can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, the VR experienced group saw
+The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
-This observation is in contrast to
+These observations are in contrast to \[insert article(s) here\]
 
 ```{r}
 ggplot(filteredData) +
@@ -560,8 +574,9 @@ p
 ```
 
 ```{r}
-plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full)) +
-  geom_boxplot()
+plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) +
+  geom_boxplot() +
+  theme_minimal()
 
 ggplotly(plt)
 ```
