@@ -309,7 +309,29 @@ When took the average change between the `BSSQ` and `ASSQ`, and visualized it in
 
 This observation is in contrast to
 
-We look further into those symptoms with the greatest differences in mean $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
+```{r}
+ggplot(filteredData) +
+  geom_boxplot(aes(x = "Discomfort", y = d_discomfort, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Fatigue", y = d_fatigue, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Headache", y = d_headache, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Eyestrain", y = d_eyestrain, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Difficulty Focusing", y = d_difficulty_focusing, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Salivation", y = d_salivation, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Sweating", y = d_sweating, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Nausea", y = d_nausea, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Difficulty Concentrating", y = d_difficulty_concentrating, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Fullness of Head", y = d_fullness_of_head, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Blurred Vision", y = d_blurred_vision, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Dizziness (o)", y = d_dizziness_o, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Dizziness (c)", y = d_dizziness_c, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Vertigo", y = d_vertigo, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Stomach Awareness", y = d_stomach_awareness, fill = VRexperience)) +
+  theme_minimal() +
+  labs(title = "VR Experience and Symptom Change",
+       x = "Symptom",
+       y = "Change in Severity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ```{r}
 library(tidyverse)
