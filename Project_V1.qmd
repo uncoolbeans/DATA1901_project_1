@@ -22,6 +22,55 @@ filteredData = select(data, Date, PID, BSSQ_1:BSSQ_16, ASSQ_1:ASSQ_16, age, VRex
 #we only want to look at those that did not undergo social modelling conditions
 filteredData = subset(filteredData, sm == "NO_SM")
 
+#reclasss VR experience as factor (was chr)
+filteredData$VRexperience = as.factor(filteredData$VRexperience)
+
+#we want to filter this data even further and split it into age groups
+#once in age groups, calculate the mean change for each of the age groups for each symptom
+filteredData = mutate(filteredData, age_group = case_when(
+  age > 45 ~ "above 45",
+  age >= 38 ~ "38 to 45",
+  age >= 30 ~ "30 to 37",
+  age >= 22 ~ "22 to 29",
+  age >= 16 ~ "16 to 21"
+))
+
+symptoms = c("discomfort",
+                "fatigue", 
+                "headache",
+                "eyestrain",
+                "difficulty_focusing",
+                "salivation",
+                "sweating",
+                "nausea",
+                "difficulty_concentrating",
+                "fullness_of_head",
+                "blurred_vision",
+                "dizziness_o",
+                "dizziness_c",
+                "vertigo",
+                "stomach_awareness",
+                "burping")
+
+for (i in 1:length(symptoms)) {
+  filteredData[[paste0("d_", symptoms[[i]])]] <- filteredData[[paste0("ASSQ_", i)]] - filteredData[[paste0("BSSQ_", i)]]
+} # Borna's friend made fun of us for doing this manually so we got chatGPT to fix it
+
+yes_means_vector <- numeric(length(symptoms))
+no_means_vector = numeric(length(symptoms))
+
+# Loop through symptoms and calculate the mean for each one
+for (i in 1:length(symptoms)) {
+  # Calculate the mean for the current symptom column
+  yes_means_vector[i] <- mean(filter(filteredData, VRexperience == "Yes")[[paste0("d_", symptoms[i])]])
+  no_means_vector[i] <- mean(filter(filteredData, VRexperience == "No")[[paste0("d_", symptoms[i])]])
+}
+
+# Create a data frame from the vector
+means_per_symptom <- data.frame(symptom = symptoms, yes_mean_value = yes_means_vector, no_means_value = no_means_vector)
+```
+
+```{r}
 #calculating differences between baseline and active SSQ for each symptom
 filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
 filteredData = mutate(filteredData, d_fatigue = ASSQ_2 - BSSQ_2)
@@ -40,22 +89,8 @@ filteredData = mutate(filteredData, d_vertigo = ASSQ_14 - BSSQ_14)
 filteredData = mutate(filteredData, d_stomach_awareness = ASSQ_15 - BSSQ_15)
 filteredData = mutate(filteredData, d_burping = ASSQ_16 - BSSQ_16)
 
-
-#reclasss VR experience as factor (was chr)
-filteredData$VRexperience = as.factor(filteredData$VRexperience)
-
-#we want to filter this data even further and split it into age groups
-#once in age groups, calculate the mean change for each of the age groups for each symptom
-filteredData = mutate(filteredData, age_group = case_when(
-  age >= 16 & age <= 21 ~ "16 to 21",
-  age >= 22 & age <= 29 ~ "22 to 29",
-  age >= 30 & age <= 37 ~ "30 to 37",
-  age >= 38 & age <= 45 ~ "38 to 45",
-  age > 45 ~ "above 45"
-))
-
 #convert the age groups into factors
-filteredData$age_group = as.factor(filteredData$age_group)
+#filteredData$age_group = as.factor(filteredData$age_group)
 
 #renaming columns to be more informative
 names(filteredData)[names(filteredData) == 'BSSQ_1'] <- 'BSSQ_discomfort'
@@ -74,9 +109,6 @@ names(filteredData)[names(filteredData) == 'BSSQ_13'] <- 'BSSQ_dizziness_c'
 names(filteredData)[names(filteredData) == 'BSSQ_14'] <- 'BSSQ_vertigo'
 names(filteredData)[names(filteredData) == 'BSSQ_15'] <- 'BSSQ_stomach_awareness'
 names(filteredData)[names(filteredData) == 'BSSQ_16'] <- 'BSSQ_burping'
-
-
-
 
 
 names(filteredData)[names(filteredData) == 'ASSQ_1'] <- 'ASSQ_discomfort'
@@ -162,7 +194,6 @@ data_by_age_group = data.frame(
 )
 
 filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >= 2010 ~ "a", year(Date) - age >= 1997 ~ "Z", year(Date) - age >= 1981 ~ "Y", year(Date) - age >= 1965 ~ "X", TRUE ~ "Old"))
-
 ```
 
 ## Summary of Findings
@@ -235,6 +266,8 @@ vr_pie
 #| warning: false
 library(plotly)
 
+
+
 yes_means = c(yes_avg_d_discomfort,
               yes_avg_d_fatigue,
               yes_avg_d_headache,
@@ -271,6 +304,10 @@ no_means = c(no_avg_d_discomfort,
              no_avg_d_burping
              )
 
+yes_means
+no_means
+means_per_symptom
+
 fig <- plot_ly(
   type  = 'scatterpolar',
   fill = 'toself',
@@ -279,14 +316,14 @@ fig <- plot_ly(
 
 fig <- fig %>% 
   add_trace(
-    r = yes_means,
+    r = means_per_symptom$yes_mean_value,
     theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea', 'Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision', 'Vertigo', 'Stomach Awareness', 'Fullness of head','Burping'),
     name = 'With VR Experience'
   )
 
 fig <- fig %>% 
   add_trace(
-    r = no_means,
+    r = means_per_symptom$no_means_value,
     theta = c('Discomfort', 'Fatigue', 'Headache', 'Eyestrain', 'Sweating', 'Nausea','Dizziness (closed)', 'Dizziness (open)', 'Difficulty Focusing', 'Difficulty Concentrating', 'Salivation', 'Blurry Vision',  'Vertigo', 'Stomach Awareness', 'Fullness of head','Burping'),
     name = 'No VR Experience'
   )
@@ -588,6 +625,39 @@ year(d) # used chatgpt for this because there is no known website in the univers
 
 ggplot(filteredData, aes(x = generation, y = ssq_full)) + geom_boxplot()
 ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_point()
+```
+
+```{r}
+ggplot(filteredData) +
+  geom_boxplot(aes(x = "Discomfort", y = d_discomfort, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Fatigue", y = d_fatigue, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Headache", y = d_headache, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Eyestrain", y = d_eyestrain, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Difficulty Focusing", y = d_difficulty_focusing, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Salivation", y = d_salivation, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Sweating", y = d_sweating, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Nausea", y = d_nausea, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Difficulty Concentrating", y = d_difficulty_concentrating, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Fullness of Head", y = d_fullness_of_head, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Blurred Vision", y = d_blurred_vision, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Dizziness (o)", y = d_dizziness_o, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Dizziness (c)", y = d_dizziness_c, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Vertigo", y = d_vertigo, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Stomach Awareness", y = d_stomach_awareness, fill = VRexperience)) +
+  theme_minimal() +
+  labs(title = "VR Experience and Symptom Change",
+       x = "Symptom",
+       y = "Change in Severity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+filteredData = mutate(filteredData, age_group = case_when(age >= 38 ~ "38 to 45",
+                                                          age >= 37 ~ "30 to 37",
+                                                          age >= 22 ~ "22 to 29",
+                                                          age >= 16 ~ "16 to 21"))
+
+ggplot(filteredData, aes(x = age_group, y = ssq_full, fill = VRexperience)) + geom_boxplot()
 ```
 
 # Professional Standard of Report
