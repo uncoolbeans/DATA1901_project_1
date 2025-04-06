@@ -18,7 +18,9 @@ suppressPackageStartupMessages(library(fmsb))
 
 data = read_excel("Project_1_Data.xlsx", sheet = "pooled123")
 
-filteredData = select(data, Date, PID, BSSQ_1:BSSQ_16, ASSQ_1:ASSQ_16, age, VRexperience, ssq_full, gender)
+filteredData = select(data, Date, PID, BSSQ_1:BSSQ_16, ASSQ_1:ASSQ_16, age, VRexperience, ssq_full, gender, sm)
+#we only want to look at those that did not undergo social modelling conditions
+filteredData = subset(filteredData, sm == "NO_SM")
 
 #calculating differences between baseline and active SSQ for each symptom
 filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
@@ -271,7 +273,8 @@ no_means = c(no_avg_d_discomfort,
 
 fig <- plot_ly(
   type  = 'scatterpolar',
-  fill = 'toself'
+  fill = 'toself',
+  title = "Average change in BSSQ and ASSQ depending on VR experience for each symptom"
 )
 
 fig <- fig %>% 
@@ -302,7 +305,9 @@ fig <- fig %>%
 fig
 ```
 
-We filtered data by weather the participant had VR experience or not, and for each symptom, we took the average change between the `BSSQ` and `ASSQ` . The spider chart above visualizes this. From initial observations, we can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, those with VR experience seem to report a greater increase in most symptoms when compared to those without VR experience.
+When took the average change between the `BSSQ` and `ASSQ`, and visualized it in the spiderchart. We can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, the VR experienced group saw
+
+This observation is in contrast to
 
 We look further into those symptoms with the greatest differences in mean $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
 
