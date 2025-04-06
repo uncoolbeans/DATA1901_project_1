@@ -159,6 +159,8 @@ data_by_age_group = data.frame(
   
 )
 
+filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >= 2010 ~ "a", year(Date) - age >= 1997 ~ "Z", year(Date) - age >= 1981 ~ "Y", year(Date) - age >= 1965 ~ "X", TRUE ~ "Old"))
+
 ```
 
 ## Summary of Findings
@@ -192,7 +194,7 @@ data_age_groups = select(filteredData, age_group)
 groups_counted = data_age_groups %>% count(age_group)
 
 age_pie = plot_ly(groups_counted, labels = ~age_group, values = ~n,
-                 type = 'pie')
+                 type = 'pie', direction = 'clockwise', sort = FALSE, rotation = 30)
 age_pie <- age_pie %>% layout(title = 'Distribution of ages',
                             showlegend = TRUE)
 age_pie
@@ -202,7 +204,6 @@ age_pie
 
 ```{r}
 #| label: VR experience pie chart
-library(RColorBrewer)
 
 data_experience = select(filteredData, VRexperience)
 exp_counted = data_experience %>% count(VRexperience)
@@ -218,7 +219,7 @@ vr_pie
 
 **Limitations**
 
--    *Self-reporting bias* for both `BSSQ` and `ASSQ` which makes the values prone to being over or underestimates by each participant.
+-   *Self-reporting bias* for both `BSSQ` and `ASSQ` which makes the values prone to being over or underestimates by each participant.
 
 -   `VRexperience` is a binary qualitative classification, it is not descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
@@ -579,8 +580,6 @@ library(lubridate)
 class(filteredData$Date[1])
 d = filteredData$Date[1] |> as.POSIXct()
 year(d) # used chatgpt for this because there is no known website in the universe that has this information for SOME REASON
-
-filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >= 2010 ~ "a", year(Date) - age >= 1997 ~ "z", year(Date) - age >= 1981 ~ "y", year(Date) - age >= 1965 ~ "x", TRUE ~ "old"))
 
 ggplot(filteredData, aes(x = generation, y = ssq_full)) + geom_boxplot()
 ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_point()
