@@ -209,6 +209,7 @@ Our data was sourced from Cosette Saunder's paper "[Socially Acquired Nocebo Eff
 **Structure**
 
 The paper included 336 participants, each with 51 variables recorded. Our project focused the following variables:
+We specifically looked at participants that did not undego any social modelling; 69 participants, each with 51 variables recorded. Our project focused the following variables:
 
 -   Baseline SSQ (`BSSQ`), Active SSQ (`ASSQ`), and `SSQ_Full`of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity before and after undergoing VR respectively, on a scale of 1 to 10.
 
@@ -257,8 +258,24 @@ vr_pie
 -   `VRexperience` is a binary qualitative classification, it is not descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
 # Research Question
+# [Research Question]{.underline}
 
 ## **What is the effect of having VR experience on the symptoms experienced by people?**
+## **What is the effect of past VR experience on the symptoms experienced by people?**
+
+```{r}
+#| label: Boxplot of full_ssq vs experience
+#| message: false
+#| warning: false
+
+plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "VR Experience", y = "Full SSQ")
+ggplotly(plt)
+```
+
+Those with and without VR experience reported varied severity of symptoms. Interestingly, the VR experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating those with experience reported more severe symptoms afterwards. VR experienced participants also showed a greater IQR than those without, at 16.25 and 8.5 respectively, pointing to experienced users reporting less consistent symptom severity.
 
 ```{r}
 #| label: Experience and symptoms spider chart
@@ -343,10 +360,35 @@ fig
 ```
 
 When took the average change between the `BSSQ` and `ASSQ`, and visualized it in the spiderchart. We can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, the VR experienced group saw
+The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
 This observation is in contrast to
+These observations are in contrast to \[insert article(s) here\]
 
 We look further into those symptoms with the greatest differences in mean $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
+```{r}
+ggplot(filteredData) +
+  geom_boxplot(aes(x = "Discomfort", y = d_discomfort, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Fatigue", y = d_fatigue, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Headache", y = d_headache, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Eyestrain", y = d_eyestrain, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Difficulty Focusing", y = d_difficulty_focusing, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Salivation", y = d_salivation, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Sweating", y = d_sweating, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Nausea", y = d_nausea, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Difficulty Concentrating", y = d_difficulty_concentrating, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Fullness of Head", y = d_fullness_of_head, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Blurred Vision", y = d_blurred_vision, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Dizziness (o)", y = d_dizziness_o, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Dizziness (c)", y = d_dizziness_c, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Vertigo", y = d_vertigo, fill = VRexperience)) +
+  geom_boxplot(aes(x = "Stomach Awareness", y = d_stomach_awareness, fill = VRexperience)) +
+  theme_minimal() +
+  labs(title = "VR Experience and Symptom Change",
+       x = "Symptom",
+       y = "Change in Severity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ```{r}
 library(tidyverse)
@@ -577,6 +619,9 @@ p
 ```{r}
 plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full)) +
   geom_boxplot()
+plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) +
+  geom_boxplot() +
+  theme_minimal()
 
 ggplotly(plt)
 ```
