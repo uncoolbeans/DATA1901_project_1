@@ -70,132 +70,6 @@ for (i in 1:length(symptoms)) {
 means_per_symptom <- data.frame(symptom = symptoms, yes_mean_value = yes_means_vector, no_means_value = no_means_vector)
 ```
 
-```{r}
-#calculating differences between baseline and active SSQ for each symptom
-filteredData = mutate(filteredData, d_discomfort = ASSQ_1 - BSSQ_1)
-filteredData = mutate(filteredData, d_fatigue = ASSQ_2 - BSSQ_2)
-filteredData = mutate(filteredData, d_headache = ASSQ_3 - BSSQ_3)
-filteredData = mutate(filteredData, d_eyestrain = ASSQ_4 - BSSQ_4)
-filteredData = mutate(filteredData, d_difficulty_focusing = ASSQ_5 - BSSQ_5)
-filteredData = mutate(filteredData, d_salivation = ASSQ_6 - BSSQ_6)
-filteredData = mutate(filteredData, d_sweating = ASSQ_7 - BSSQ_7)
-filteredData = mutate(filteredData, d_nausea = ASSQ_8 - BSSQ_8)
-filteredData = mutate(filteredData, d_difficulty_concentrating = ASSQ_9 - BSSQ_9)
-filteredData = mutate(filteredData, d_fullness_of_head = ASSQ_10 - BSSQ_10)
-filteredData = mutate(filteredData, d_blurred_vision = ASSQ_11 - BSSQ_11)
-filteredData = mutate(filteredData, d_dizziness_o = ASSQ_12 - BSSQ_12)
-filteredData = mutate(filteredData, d_dizziness_c = ASSQ_13 - BSSQ_13)
-filteredData = mutate(filteredData, d_vertigo = ASSQ_14 - BSSQ_14)
-filteredData = mutate(filteredData, d_stomach_awareness = ASSQ_15 - BSSQ_15)
-filteredData = mutate(filteredData, d_burping = ASSQ_16 - BSSQ_16)
-
-#convert the age groups into factors
-#filteredData$age_group = as.factor(filteredData$age_group)
-
-#renaming columns to be more informative
-names(filteredData)[names(filteredData) == 'BSSQ_1'] <- 'BSSQ_discomfort'
-names(filteredData)[names(filteredData) == 'BSSQ_2'] <- 'BSSQ_fatigue'
-names(filteredData)[names(filteredData) == 'BSSQ_3'] <- 'BSSQ_headache'
-names(filteredData)[names(filteredData) == 'BSSQ_4'] <- 'BSSQ_eyestrain'
-names(filteredData)[names(filteredData) == 'BSSQ_5'] <- 'BSSQ_difficulty_focusing'
-names(filteredData)[names(filteredData) == 'BSSQ_6'] <- 'BSSQ_salivation'
-names(filteredData)[names(filteredData) == 'BSSQ_7'] <- 'BSSQ_sweating'
-names(filteredData)[names(filteredData) == 'BSSQ_8'] <- 'BSSQ_nausea'
-names(filteredData)[names(filteredData) == 'BSSQ_9'] <- 'BSSQ_difficulty_concentrating'
-names(filteredData)[names(filteredData) == 'BSSQ_10'] <- 'BSSQ_fullness_of_head'
-names(filteredData)[names(filteredData) == 'BSSQ_11'] <- 'BSSQ_blurred_vision'
-names(filteredData)[names(filteredData) == 'BSSQ_12'] <- 'BSSQ_dizziness_o'
-names(filteredData)[names(filteredData) == 'BSSQ_13'] <- 'BSSQ_dizziness_c'
-names(filteredData)[names(filteredData) == 'BSSQ_14'] <- 'BSSQ_vertigo'
-names(filteredData)[names(filteredData) == 'BSSQ_15'] <- 'BSSQ_stomach_awareness'
-names(filteredData)[names(filteredData) == 'BSSQ_16'] <- 'BSSQ_burping'
-
-
-names(filteredData)[names(filteredData) == 'ASSQ_1'] <- 'ASSQ_discomfort'
-names(filteredData)[names(filteredData) == 'ASSQ_2'] <- 'ASSQ_fatigue'
-names(filteredData)[names(filteredData) == 'ASSQ_3'] <- 'ASSQ_headache'
-names(filteredData)[names(filteredData) == 'ASSQ_4'] <- 'ASSQ_eyestrain'
-names(filteredData)[names(filteredData) == 'ASSQ_5'] <- 'ASSQ_difficulty_focusing'
-names(filteredData)[names(filteredData) == 'ASSQ_6'] <- 'ASSQ_salivation'
-names(filteredData)[names(filteredData) == 'ASSQ_7'] <- 'ASSQ_sweating'
-names(filteredData)[names(filteredData) == 'ASSQ_8'] <- 'ASSQ_nausea'
-names(filteredData)[names(filteredData) == 'ASSQ_9'] <- 'ASSQ_difficulty_concentrating'
-names(filteredData)[names(filteredData) == 'ASSQ_10'] <- 'ASSQ_fullness_of_head'
-names(filteredData)[names(filteredData) == 'ASSQ_11'] <- 'ASSQ_blurred_vision'
-names(filteredData)[names(filteredData) == 'ASSQ_12'] <- 'ASSQ_dizziness_o'
-names(filteredData)[names(filteredData) == 'ASSQ_13'] <- 'ASSQ_dizziness_c'
-names(filteredData)[names(filteredData) == 'ASSQ_14'] <- 'ASSQ_vertigo'
-names(filteredData)[names(filteredData) == 'ASSQ_15'] <- 'ASSQ_stomach_awareness'
-names(filteredData)[names(filteredData) == 'ASSQ_16'] <- 'ASSQ_burping'
-
-
-#isolating the data dictionary
-data_dict = read_excel("Project_1_Data.xlsx", sheet = "data_dictionary")
-
-#filter into groups with experience or not
-withVRexperience = filter(filteredData, VRexperience == 'Yes')
-noVRexperience = filter(filteredData, VRexperience == 'No')
-
-#taking averages for with/without experience
-yes_avg_d_discomfort = mean(withVRexperience$d_discomfort)
-yes_avg_d_fatigue = mean(withVRexperience$d_fatigue)
-yes_avg_d_headache = mean(withVRexperience$d_headache)
-yes_avg_d_eyestrain = mean(withVRexperience$d_eyestrain)
-yes_avg_d_difficulty_focusing = mean(withVRexperience$d_difficulty_focusing)
-yes_avg_d_salivation = mean(withVRexperience$d_salivation)
-yes_avg_d_sweating = mean(withVRexperience$d_sweating)
-yes_avg_d_nausea = mean(withVRexperience$d_nausea)
-yes_avg_d_difficulty_concentrating = mean(withVRexperience$d_difficulty_concentrating)
-yes_avg_d_fullness = mean(withVRexperience$d_fullness_of_head)
-yes_avg_d_vision = mean(withVRexperience$d_blurred_vision)
-yes_avg_d_dizziness_o = mean(withVRexperience$d_dizziness_o)
-yes_avg_d_dizziness_c = mean(withVRexperience$d_dizziness_c)
-yes_avg_d_vertigo = mean(withVRexperience$d_vertigo)
-yes_avg_d_stomach = mean(withVRexperience$d_stomach_awareness)
-yes_avg_d_burping = mean(withVRexperience$d_burping)
-
-
-no_avg_d_discomfort = mean(noVRexperience$d_discomfort)
-no_avg_d_fatigue = mean(noVRexperience$d_fatigue)
-no_avg_d_headache = mean(noVRexperience$d_headache)
-no_avg_d_eyestrain = mean(noVRexperience$d_eyestrain)
-no_avg_d_difficulty_focusing = mean(noVRexperience$d_difficulty_focusing)
-no_avg_d_salivation = mean(noVRexperience$d_salivation)
-no_avg_d_sweating = mean(noVRexperience$d_sweating)
-no_avg_d_nausea = mean(noVRexperience$d_nausea)
-no_avg_d_difficulty_concentrating = mean(noVRexperience$d_difficulty_concentrating)
-no_avg_d_fullness = mean(noVRexperience$d_fullness_of_head)
-no_avg_d_vision = mean(noVRexperience$d_blurred_vision)
-no_avg_d_dizziness_o = mean(noVRexperience$d_dizziness_o)
-no_avg_d_dizziness_c = mean(noVRexperience$d_dizziness_c)
-no_avg_d_vertigo = mean(noVRexperience$d_vertigo)
-no_avg_d_stomach = mean(noVRexperience$d_stomach_awareness)
-no_avg_d_burping = mean(noVRexperience$d_burping)
-
-
-#taking averages for different age groups
-grp1 = filter(filteredData, age_group == '16 to 21')
-grp2 = filter(filteredData, age_group == '22 to 29')
-grp3 = filter(filteredData, age_group == '30 to 37')
-grp4 = filter(filteredData, age_group == '38 to 45')
-grp5 = filter(filteredData, age_group == 'above 45')
-
-mean_sqq_ages = c(mean(grp1$ssq_full),
-                  mean(grp2$ssq_full),
-                  mean(grp3$ssq_full),
-                  mean(grp4$ssq_full),
-                  mean(grp5$ssq_full)
-                  )
-
-data_by_age_group = data.frame(
-  age_group = c("16 to 21", '22 to 29','30 to 37','38 to 45','Above 45'),
-  mean_ssq = mean_sqq_ages
-  
-)
-
-filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >= 2010 ~ "a", year(Date) - age >= 1997 ~ "Z", year(Date) - age >= 1981 ~ "Y", year(Date) - age >= 1965 ~ "X", TRUE ~ "Old"))
-```
-
 ## Summary of Findings
 
 (executive summary goes here)
@@ -208,8 +82,7 @@ Our data was sourced from Cosette Saunder's paper "[Socially Acquired Nocebo Eff
 
 **Structure**
 
-The paper included 336 participants, each with 51 variables recorded. Our project focused the following variables:
-We specifically looked at participants that did not undego any social modelling; 69 participants, each with 51 variables recorded. Our project focused the following variables:
+The paper included 336 participants, each with 51 variables recorded. Our project focused the following variables: We specifically looked at participants that did not undego any social modelling; 69 participants, each with 51 variables recorded. Our project focused the following variables:
 
 -   Baseline SSQ (`BSSQ`), Active SSQ (`ASSQ`), and `SSQ_Full`of 16 symptoms (*quantitative, discrete)*: self-reported symptom severity before and after undergoing VR respectively, on a scale of 1 to 10.
 
@@ -258,9 +131,11 @@ vr_pie
 -   `VRexperience` is a binary qualitative classification, it is not descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
 # Research Question
+
 # [Research Question]{.underline}
 
 ## **What is the effect of having VR experience on the symptoms experienced by people?**
+
 ## **What is the effect of past VR experience on the symptoms experienced by people?**
 
 ```{r}
@@ -282,48 +157,6 @@ Those with and without VR experience reported varied severity of symptoms. Inter
 #| message: false
 #| warning: false
 library(plotly)
-
-
-
-yes_means = c(yes_avg_d_discomfort,
-              yes_avg_d_fatigue,
-              yes_avg_d_headache,
-              yes_avg_d_eyestrain,
-              yes_avg_d_sweating,
-              yes_avg_d_nausea,
-              yes_avg_d_dizziness_c,
-              yes_avg_d_dizziness_o,
-              yes_avg_d_difficulty_focusing,
-              yes_avg_d_difficulty_concentrating,
-              yes_avg_d_salivation,
-              yes_avg_d_vision,
-              yes_avg_d_vertigo,
-              yes_avg_d_stomach,
-              yes_avg_d_fullness,
-              yes_avg_d_burping
-              )
-
-no_means = c(no_avg_d_discomfort,
-             no_avg_d_fatigue,
-             no_avg_d_headache,
-             no_avg_d_eyestrain,
-             no_avg_d_sweating,
-             no_avg_d_nausea,
-             no_avg_d_dizziness_c,
-             no_avg_d_dizziness_o,
-             no_avg_d_difficulty_focusing,
-             no_avg_d_difficulty_concentrating,
-             no_avg_d_salivation,
-             no_avg_d_vision,
-             no_avg_d_vertigo,
-             no_avg_d_stomach,
-             no_avg_d_fullness,
-             no_avg_d_burping
-             )
-
-yes_means
-no_means
-means_per_symptom
 
 fig <- plot_ly(
   type  = 'scatterpolar',
@@ -359,13 +192,12 @@ fig <- fig %>%
 fig
 ```
 
-When took the average change between the `BSSQ` and `ASSQ`, and visualized it in the spiderchart. We can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, the VR experienced group saw
-The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
+When took the average change between the `BSSQ` and `ASSQ`, and visualized it in the spiderchart. We can see that both groups experience similar $\Delta$ (change) in most symptoms. Interestingly, the VR experienced group saw The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
-This observation is in contrast to
-These observations are in contrast to \[insert article(s) here\]
+This observation is in contrast to These observations are in contrast to \[insert article(s) here\]
 
 We look further into those symptoms with the greatest differences in mean $\Delta$ : `Dizziness (Eyes closed)` , `Vertigo` and `Stomach Awareness`.
+
 ```{r}
 ggplot(filteredData) +
   geom_boxplot(aes(x = "Discomfort", y = d_discomfort, fill = VRexperience)) +
