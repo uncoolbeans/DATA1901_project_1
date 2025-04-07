@@ -216,6 +216,40 @@ vr_pie <- vr_pie %>% layout(title = 'Distribution of VR experience',
                             showlegend = TRUE)
 
 vr_pie
+
+```
+
+## VR Experience Age Groups
+
+```{r}
+#| label: Distribution of age groups for those with VR experience
+
+data_experience = select(withVRexperience, age_group)
+exp_counted = data_experience %>% count(age_group)
+
+vr_pie = plot_ly(exp_counted, labels = ~age_group, values = ~n,
+                 type = 'pie')
+vr_pie <- vr_pie %>% layout(title = 'Distribution of age groups for those with VR experience',
+                            showlegend = TRUE)
+
+vr_pie
+
+```
+
+## No Experience Age Groups
+
+```{r}
+#| label: Distribution of age groups for those without VR experience
+
+data_experience = select(noVRexperience, age_group)
+exp_counted = data_experience %>% count(age_group)
+
+vr_pie = plot_ly(exp_counted, labels = ~age_group, values = ~n,
+                 type = 'pie')
+vr_pie <- vr_pie %>% layout(title = 'Distribution of age groups for those without VR experience',
+                            showlegend = TRUE)
+
+vr_pie
 ```
 :::
 
@@ -323,6 +357,55 @@ fig
 
 The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
+To further investigate why our conclusions contradicts research, we investigate a potential confounding variable: `age`.
+
+::: panel-tabset
+## With Experience
+
+```{r}
+plt2 = ggplot(withVRexperience, aes(x = age_group, y = ssq_full, fill = age_group)) +
+  geom_boxplot() +
+  labs(title = "Full SSQ for each age group (With experience)", y = "Full SSQ", x = "Age Group")
+
+ggplotly(plt2)
+```
+
+## No Experience
+
+```{r}
+plt2 = ggplot(noVRexperience, aes(x = age_group, y = ssq_full, fill = age_group)) +
+  geom_boxplot() +
+  labs(title = "Full SSQ Scores for each age group (No experience)", y = "Full SSQ", x = "Age Group")
+
+ggplotly(plt2)
+```
+
+## Comparison
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = as.factor(age_group) , y = ssq_full, group = VRexperience, fill = VRexperience)) +
+  geom_boxplot(position = "dodge") +
+  labs(x = "Age Group",  y = "Full SSQ", title = "Full SSQ Scores by Age Group (both groups)")
+
+ggplotly(plt) %>%  layout(boxmode = "group")
+```
+
+## Combined
+
+```{r}
+plt2 = ggplot(filteredData, aes(x = age_group, y = ssq_full, fill = age_group)) +
+  geom_boxplot() +
+  labs(title = "Full SSQ Scores for each age group", y = "Full SSQ", x = "Age Group")
+
+ggplotly(plt2)
+```
+:::
+
 ## Source Analysis
 
 These observations are in contrast to articles published by IEEE Games such as \[1\] - '**Motion Sickness in Virtual Reality: An Empirical Evaluation**', stating that *"VR users having VR experience or 3D game experience or motion sickness experience will undergo less motion sickness..."* Justification for the confounding results lies in the smaller sample space, wherein it is given that each person's experience will vary too greatly for a strong correlation to be found across results in different papers. Furthermore, the observations found here conflict with Heesok Oh and Wookho Son's \[2\] '**Cybersickness and Its Severity Arising from Virtual Reality Content: A Comprehensive Study**', where their "*results indicate that the elder participants experienced 393% more severe nausea*", as opposed to our data set which depicts no relation between varying symptoms and age.
@@ -370,169 +453,6 @@ ggplotly(plt) %>%  layout(boxmode = "group")
 \- other issues might also lie in how reporting sickness is inherently clunky (like wtf is the burping questionnare bro come on)
 
 -might try and explain comical amounts of box plots that are just a single line (challenge problem for me to answer if i dare)
-
-::: panel-tabset
-## Dizziness
-
-```{r}
-#| label: Dizziness Boxplot 
-library(tidyverse)
-library(plotly)
-
-plt = ggplot(filteredData, aes(x = VRexperience, y = d_dizziness_c)) +
-  geom_boxplot() +
-  labs(x = "VR Experience",  y = "Change in BSSQ and ASSQ-Dizziness (Eyes Closed)")
-
-ggplotly(plt)
-
-#fivenum(withVRexperience$d_dizziness_c)
-#fivenum(noVRexperience$d_dizziness_c)
-#
-#mean(withVRexperience$d_dizziness_c)
-#mean(noVRexperience$d_dizziness_c)
-#
-#sd(withVRexperience$d_dizziness_c)
-#sd(noVRexperience$d_dizziness_c)
-
-
-#since from the boxplots we can see that both sets have a fair number of outliers which could affect the mean, the median + IQR may be a better measure of spread
-
-```
-
-```{r}
-#| label: Dizziness Scatterplot
-#| message: false
-#| warning: false
-library(tidyverse)
-library(plotly)
-library(gganimate)
-library(gifski)
-
-plt = ggplot(filteredData, aes(y = d_dizziness_c, x = age, colour = VRexperience)) +
-  geom_point() +
-  labs(x = "Age",  y = "Dizziness (Eyes Closed)", col = "VR Experience") +
-  transition_states(VRexperience, transition_length = 1, state_length = 1) +
-  enter_fade() + exit_fade()
-
-#animate(plt, renderer = gifski_renderer())
-ggplotly(plt)
-```
-
-```{r}
-#| label: Age groups for dizziness boxplot
-library(tidyverse)
-library(plotly)
-
-plt = ggplot(filteredData, aes(x = age_group, y = d_dizziness_c)) +
-  geom_boxplot() +
-  labs(x = "Age Group",  y = "Change in BSSQ and ASSQ-Dizziness(Eyes Closed)")
-
-ggplotly(plt)
-
-```
-
-## Vertigo
-
-```{r}
-#| label: Vertigo boxplot
-library(tidyverse)
-library(plotly)
-
-plt = ggplot(filteredData, aes(x = VRexperience, y = d_vertigo)) +
-  geom_boxplot() +
-  labs(x = "VR Experience",  y = "Vertigo")
-
-ggplotly(plt)
-
-#fivenum(withVRexperience$d_vertigo)
-#fivenum(noVRexperience$d_vertigo)
-#
-#mean(withVRexperience$d_vertigo)
-#mean(noVRexperience$d_vertigo)
-#
-#sd(withVRexperience$d_vertigo)
-#sd(noVRexperience$d_vertigo)
-```
-
-```{r}
-#| label: Age groups for vertigo boxplot
-library(tidyverse)
-library(plotly)
-
-plt = ggplot(filteredData, aes(x = age_group, y = d_vertigo)) +
-  geom_boxplot() +
-  labs(x = "Age Group",  y = "Change in BSSQ and ASSQ - Vertigo")
-
-ggplotly(plt)
-```
-
-```{r}
-#| label: Vertigo Scatterplot
-#| message: false
-#| warning: false
-library(tidyverse)
-library(plotly)
-library(gganimate)
-library(gifski)
-
-plt = ggplot(filteredData, aes(y = d_vertigo, x = age, colour = VRexperience)) +
-  geom_point() +
-  labs(x = "Age",  y = "Vertigo", col = "VR Experience") +
-  transition_states(VRexperience, transition_length = 1, state_length = 1) +
-  enter_fade() + exit_fade()
-
-#animate(plt, renderer = gifski_renderer())
-ggplotly(plt)
-```
-
-## Stomach Awareness
-
-```{r}
-#| label: Stomach_awareness boxplot
-#| message: false
-#| warning: false
-library(tidyverse)
-library(plotly)
-
-plt = ggplot(filteredData, aes(x = VRexperience, y = d_stomach_awareness)) +
-  geom_boxplot() +
-  labs(x = "VR Experience",  y = "Change in BSSQ and ASSQ - Stomach Awareness")
-
-ggplotly(plt)
-
-```
-
-```{r}
-#| label: Age groups for stomach awareness boxplot
-library(tidyverse)
-library(plotly)
-
-plt = ggplot(filteredData, aes(x = age_group, y = d_stomach_awareness)) +
-  geom_boxplot() +
-  labs(x = "Age Group",  y = "Change in BSSQ and ASSQ - Stomach Awareness")
-
-ggplotly(plt)
-```
-
-```{r}
-#| label: Stomach Awareness Scatterplot
-#| message: false
-#| warning: false
-library(tidyverse)
-library(plotly)
-library(gganimate)
-library(gifski)
-
-plt = ggplot(filteredData, aes(y = d_stomach_awareness, x = age, colour = VRexperience)) +
-  geom_point() +
-  labs(x = "Age",  y = "Stomach Awareness", col = "VR Experience") +
-  transition_states(VRexperience, transition_length = 1, state_length = 1) +
-  enter_fade() + exit_fade()
-
-#animate(plt, renderer = gifski_renderer())
-ggplotly(plt)
-```
-:::
 
 ```{r}
 library(plotly)
