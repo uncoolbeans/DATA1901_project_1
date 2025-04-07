@@ -241,7 +241,9 @@ plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperien
 ggplotly(plt)
 ```
 
-Those with and without VR experience reported varied severity of symptoms. Interestingly, the VR experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating those with experience reported more severe symptoms afterwards. VR experienced participants also showed a greater IQR than those without, at 16.25 and 8.5 respectively, pointing to experienced users reporting less consistent symptom severity.
+## Statistical Analysis
+
+Those with and without VR experience reported varied severity of symptoms. Interestingly, the VR experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating those with experience reported more severe symptoms afterwards. VR experienced participants also showed a greater IQR than those without, at 16.25 and 8.5 respectively, pointing to experienced users reporting less consistent symptom severity. That is, the difference in average rating from the Simulator Sickness Questionnaire (SSQ) is consistently lower for less experienced users. With respect to age, the scatterplot we have has a very low correlation of \[INSERT CORRELATION FOR YES AND NO EXPERIECNE CALCULATION HERE FUCK R STUDIO\], implying that the data will not fit to a linear model, and there conclusively exists no correlation between age and severity of symptoms, across both having some and zero past experience with VR.
 
 ```{r}
 #| label: Experience and symptoms spider chart
@@ -321,7 +323,9 @@ fig
 
 The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
-These observations are in contrast to articles published by IEEE Games such as \[1\] - '**Motion Sickness in Virtual Reality: An Empirical Evaluation**', stating that *"VR users having VR experience or 3D game experience or motion sickness experience will undergo less motion sickness while experiencing pleasant environment than a horror environment.".* Furthermore, in more isolated VR scenarios, such as a cave, IEEE Games' results in \[2\] - '**Examining Rotation Gain in CAVE-like Virtual Environments'** \[REMINDER THAT I WILL FORMAT THIS TO APA IN TEXT REFERENCING EVENTUALLY\] provides neutral data on motion sickness, postulating that there are "*no significant effects of rotation gain on simulator sickness, presence, or user performance in a cognitive task, but there is a negative influence on spatial knowledge especially for inexperienced users.*" Justification for the confounding results lies in the smaller sample space, wherein it is given that each person's experience will vary too greatly for a strong correlation to be found across results in different papers.
+## Source Analysis
+
+These observations are in contrast to articles published by IEEE Games such as \[1\] - '**Motion Sickness in Virtual Reality: An Empirical Evaluation**', stating that *"VR users having VR experience or 3D game experience or motion sickness experience will undergo less motion sickness..."* Justification for the confounding results lies in the smaller sample space, wherein it is given that each person's experience will vary too greatly for a strong correlation to be found across results in different papers. Furthermore, the observations found here conflict with Heesok Oh and Wookho Son's \[2\] '**Cybersickness and Its Severity Arising from Virtual Reality Content: A Comprehensive Study**', where their "*results indicate that the elder participants experienced 393% more severe nausea*", as opposed to our data set which depicts no relation between varying symptoms and age.
 
 ```{r}
 ggplot(filteredData) +
@@ -358,6 +362,14 @@ plt
 
 ggplotly(plt) %>%  layout(boxmode = "group")
 ```
+
+## Potential Justification
+
+-reason out in short sentences possible causes for why age doesnt correlate (ie smaller sample space)
+
+\- other issues might also lie in how reporting sickness is inherently clunky (like wtf is the burping questionnare bro come on)
+
+-might try and explain comical amounts of box plots that are just a single line (challenge problem for me to answer if i dare)
 
 ::: panel-tabset
 ## Dizziness
@@ -635,4 +647,4 @@ ggplot(filteredData, aes(x = age, y = ssq_full, color = generation)) + geom_poin
 
 <https://ieeexplore.ieee.org/abstract/document/9133071> \[1\]
 
-<https://ieeexplore.ieee.org/document/7384536/> \[2\]
+<https://www.mdpi.com/1424-8220/22/4/1314> \[2\]
