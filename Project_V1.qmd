@@ -40,7 +40,6 @@ filteredData = mutate(filteredData, d_vertigo = ASSQ_14 - BSSQ_14)
 filteredData = mutate(filteredData, d_stomach_awareness = ASSQ_15 - BSSQ_15)
 filteredData = mutate(filteredData, d_burping = ASSQ_16 - BSSQ_16)
 
-
 #reclasss VR experience as factor (was chr)
 filteredData$VRexperience = as.factor(filteredData$VRexperience)
 
@@ -74,10 +73,6 @@ names(filteredData)[names(filteredData) == 'BSSQ_13'] <- 'BSSQ_dizziness_c'
 names(filteredData)[names(filteredData) == 'BSSQ_14'] <- 'BSSQ_vertigo'
 names(filteredData)[names(filteredData) == 'BSSQ_15'] <- 'BSSQ_stomach_awareness'
 names(filteredData)[names(filteredData) == 'BSSQ_16'] <- 'BSSQ_burping'
-
-
-
-
 
 names(filteredData)[names(filteredData) == 'ASSQ_1'] <- 'ASSQ_discomfort'
 names(filteredData)[names(filteredData) == 'ASSQ_2'] <- 'ASSQ_fatigue'
@@ -446,7 +441,7 @@ library(plotly)
 
 plt = ggplot(filteredData, aes(x = as.factor(gender) , y = ssq_full, group = VRexperience, fill = VRexperience)) +
   geom_boxplot(position = "dodge") +
-  labs(x = "gender",  y = "Full SSQ")
+  labs(x = "Gender",  y = "Full SSQ")
 
 ggplotly(plt) %>% layout(boxmode = "group")
 ```
