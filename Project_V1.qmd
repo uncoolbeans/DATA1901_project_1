@@ -365,7 +365,8 @@ To further investigate why our conclusions contradicts research, we investigate 
 ```{r}
 plt2 = ggplot(withVRexperience, aes(x = age_group, y = ssq_full, fill = age_group)) +
   geom_boxplot() +
-  labs(title = "Full SSQ for each age group (With experience)", y = "Full SSQ", x = "Age Group")
+  labs(title = "Full SSQ for each age group (With experience)", y = "Full SSQ", x = "Age Group") +
+  ylim(-10, 60)
 
 ggplotly(plt2)
 ```
@@ -375,7 +376,8 @@ ggplotly(plt2)
 ```{r}
 plt2 = ggplot(noVRexperience, aes(x = age_group, y = ssq_full, fill = age_group)) +
   geom_boxplot() +
-  labs(title = "Full SSQ Scores for each age group (No experience)", y = "Full SSQ", x = "Age Group")
+  labs(title = "Full SSQ Scores for each age group (No experience)", y = "Full SSQ", x = "Age Group") +
+  ylim(-10, 60)
 
 ggplotly(plt2)
 ```
@@ -390,7 +392,8 @@ library(plotly)
 
 plt = ggplot(filteredData, aes(x = as.factor(age_group) , y = ssq_full, group = VRexperience, fill = VRexperience)) +
   geom_boxplot(position = "dodge") +
-  labs(x = "Age Group",  y = "Full SSQ", title = "Full SSQ Scores by Age Group (both groups)")
+  labs(x = "Age Group",  y = "Full SSQ", title = "Full SSQ Scores by Age Group (both groups)") +
+  ylim(-10, 60)
 
 ggplotly(plt) %>%  layout(boxmode = "group")
 ```
@@ -400,7 +403,8 @@ ggplotly(plt) %>%  layout(boxmode = "group")
 ```{r}
 plt2 = ggplot(filteredData, aes(x = age_group, y = ssq_full, fill = age_group)) +
   geom_boxplot() +
-  labs(title = "Full SSQ Scores for each age group", y = "Full SSQ", x = "Age Group")
+  labs(title = "Full SSQ Scores for each age group", y = "Full SSQ", x = "Age Group") +
+  ylim(-10, 60)
 
 ggplotly(plt2)
 ```
@@ -435,15 +439,16 @@ ggplot(filteredData) +
 ```
 
 ```{r}
+#| message: false
+#| warning: false
 library(tidyverse)
 library(plotly)
 
 plt = ggplot(filteredData, aes(x = as.factor(gender) , y = ssq_full, group = VRexperience, fill = VRexperience)) +
   geom_boxplot(position = "dodge") +
   labs(x = "gender",  y = "Full SSQ")
-plt
 
-ggplotly(plt) %>%  layout(boxmode = "group")
+ggplotly(plt) %>% layout(boxmode = "group")
 ```
 
 ## Potential Justification
