@@ -270,9 +270,9 @@ plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperien
 ggplotly(plt)
 ```
 
-## Statistical Analysis
+Those with and without VR experience reported varied severity of symptoms. Interestingly, the VR experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating those with experience reported more severe symptoms afterwards. VR experienced participants also showed a greater IQR than those without, at 16.25 and 8.5 respectively, pointing to experienced users reporting less consistent symptom severity. That is, the difference in average rating from the Simulator Sickness Questionnaire (SSQ) is consistently lower for less experienced users. With respect to age, the scatter-plot we have has a very low correlation of \[INSERT CORRELATION FOR YES AND NO EXPERIECNE CALCULATION HERE\], implying that the data will not fit to a linear model, and there conclusively exists no correlation between age and severity of symptoms, across both having some and zero past experience with VR.
 
-Those with and without VR experience reported varied severity of symptoms. Interestingly, the VR experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating those with experience reported more severe symptoms afterwards. VR experienced participants also showed a greater IQR than those without, at 16.25 and 8.5 respectively, pointing to experienced users reporting less consistent symptom severity. That is, the difference in average rating from the Simulator Sickness Questionnaire (SSQ) is consistently lower for less experienced users. With respect to age, the scatterplot we have has a very low correlation of \[INSERT CORRELATION FOR YES AND NO EXPERIECNE CALCULATION HERE FUCK R STUDIO\], implying that the data will not fit to a linear model, and there conclusively exists no correlation between age and severity of symptoms, across both having some and zero past experience with VR.
+With regards to gender, source \[1\] (apa this), their results "*indicate excruciating symptoms of motion sickness in female*s", in contrast to our results which depict no difference in reported sickness with respect to gender. This may be a case of difference in findings, as both Saunders's research paper and \[1\]'s had a considerably small group of test subjects, implying that both suggestions may be equally true, and would require a larger group in more trials to verify.
 
 ```{r}
 #| label: Experience and symptoms spider chart
@@ -405,9 +405,13 @@ ggplotly(plt2)
 ```
 :::
 
-## Source Analysis
+As the boxplots show, age does not seem to be a confounding variable explaining the increase in symptoms that arise with previous VR experience. There appears to be substantial overlap between the SSQ scores of different age groups across both the “With Experience” and “No Experience” conditions. In both sets of boxplots, the medians remain relatively close together, with no consistent trend among increasing age groups.
 
-These observations are in contrast to articles published by IEEE Games such as \[1\] - '**Motion Sickness in Virtual Reality: An Empirical Evaluation**', stating that *"VR users having VR experience or 3D game experience or motion sickness experience will undergo less motion sickness..."* Justification for the confounding results lies in the smaller sample space, wherein it is given that each person's experience will vary too greatly for a strong correlation to be found across results in different papers. Furthermore, the observations found here conflict with Heesok Oh and Wookho Son's \[2\] '**Cybersickness and Its Severity Arising from Virtual Reality Content: A Comprehensive Study**', where their "*results indicate that the elder participants experienced 393% more severe nausea*", as opposed to our data set which depicts no relation between varying symptoms and age.
+Notably, while the spread of the SSQ scores (as shown by the IQR and outliers) varies, there seems to be no consistent pattern across age groups. For example, in the “With Experience” condition, the 16-21 age group has a greater IQR than the 22-29 age group, but then the 22-29 group has a lower IQR than the 30-37 group, showing no consistent trend.
+
+The comparison plot emphasises that across all age groups, participants with previous VR experience reported more severe symptoms. Despite some variation in spread within each group, the general shift upward in medians for experienced participants suggests a relationship between experience and symptom severity. However, given the overlap in distributions and lack of consistent change in medians across age groups, age does not appear to be a decisive confounding factor. The observations found here conflict with previous research that suggests older age groups experience more severe cybersickness (Oh & Son, 2022). A Possible justification for this is that the age sample sizes are not equal. For example, there are 29 participants in the 30 to 37 age group but only 7 in the 16 to 21 age group. This limits the reliability of comparisons made across age groups, as smaller sample sizes can lead to greater variability, making it harder to detect trends.
+
+Finally, the combined graph reinforces the idea that age does not seem to be a confounding factor as there is significant overlap in Full SSQ between all age groups. Holistically, while we do find that past VR experience correlates with higher reported symptoms, age does not provide a consistent explanatory variable for this increase. Like other complex human responses, factors beyond age may be more influential in determining symptom severity.
 
 ```{r}
 ggplot(filteredData) +
@@ -445,8 +449,6 @@ plt = ggplot(filteredData, aes(x = as.factor(gender) , y = ssq_full, group = VRe
 
 ggplotly(plt) %>% layout(boxmode = "group")
 ```
-
-## Potential Justification
 
 -reason out in short sentences possible causes for why age doesnt correlate (ie smaller sample space)
 
