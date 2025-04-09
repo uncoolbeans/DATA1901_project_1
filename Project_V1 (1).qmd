@@ -352,7 +352,7 @@ fig
 
 The spider-chart above reinforces what we see in the box-plot, with VR experienced users indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
-To further investigate why our conclusion contradicts research, we stratified our analysis using a potential confounding variable: `age`.
+To further investigate why our conclusion contradicts research, we stratified our analysis using a potential confounding variable: age.
 
 ::: panel-tabset
 ## With Experience
@@ -414,7 +414,7 @@ Notably, while SSQ spread varies, there seems to be no consistent pattern across
 
 These observations conflict with prior research suggesting older users experience more severe cyber-sickness (Oh & Son, 2022), possibly due to our data having unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 age group but only 7 in the 16-21 age group. This limits the reliability of comparisons.
 
-Finally, we decided to investigate the effect of gender on our data.
+Finally, we filtered by gender to investigate it as a potential confounder.
 
 ::: panel-tabset
 ## Comparison
@@ -477,8 +477,8 @@ AI (ChatGPT) was used to clean up our code for one version pushed to GitHub. Thi
 
 # References
 
-Chattha, U. A., Janjua, U. I., Anwar, F., Madni, T. M., Cheema, M. F., & Janjua, S. I. (2020). Motion Sickness in Virtual Reality: An Empirical Evaluation. *IEEE Access*, *8*, 130486–130499. https://doi.org/10.1109/access.2020.3007076
+Chattha, U. A., Janjua, U. I., Anwar, F., Madni, T. M., Cheema, M. F., & Janjua, S. I. (2020). Motion Sickness in Virtual Reality: An Empirical Evaluation. *IEEE Access*, *8*, 130486–130499. <https://doi.org/10.1109/access.2020.3007076>
 
-‌Oh, H., & Son, W. (2022). Cybersickness and Its Severity Arising from Virtual Reality Content: A Comprehensive Study. *Sensors*, *22*(4), 1314. https://doi.org/10.3390/s22041314
+‌Oh, H., & Son, W. (2022). Cybersickness and Its Severity Arising from Virtual Reality Content: A Comprehensive Study. *Sensors*, *22*(4), 1314. <https://doi.org/10.3390/s22041314>
 
 ‌
