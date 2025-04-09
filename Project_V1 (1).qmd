@@ -1,11 +1,12 @@
 ---
-title: "Project_V1"
+title: "DATA1901 Project 1 Group 5 Submission"
 format: 
   html: 
     embed-resources: true
     code-fold: true
     df_print: paged
 editor: visual
+theme: lux
 ---
 
 ```{r}
@@ -162,7 +163,7 @@ filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >=
 
 ## Summary of Findings
 
-Our analysis found that individuals with prior VR experience reported heightened symptoms when exposed to VR, compared to those without prior experience. Age and gender had little to no effect. Further research should examine the nature, amount, and frequency of prior VR use to improve result accuracy.
+Our analysis found that individuals with prior VR experience reported heightened symptoms of motion sickness when exposed to VR, compared to those without experience. Age and gender had little to no effect on results. Further research should examine the nature, amount, and frequency of prior VR use to improve accuracy.
 
 ## Initial Data Analysis (IDA)
 
@@ -266,11 +267,12 @@ vr_pie
 plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperience)) +
   geom_boxplot() +
   theme_minimal() +
-  labs(x = "VR Experience", y = "Full SSQ") + scale_fill_manual(values = c("#A8DADC", "#FFD6A5"))
+  labs(x = "VR Experience", y = "Full SSQ") + scale_fill_manual(values = c("#A8DADC", "#FFD6A5")) +
+  theme(legend.position = "none")
 ggplotly(plt)
 ```
 
-Participants with and without VR experience reported varied severity of symptoms. Interestingly, the VR-experienced group saw a greater median `ssq_full`, at 7.0 compared to -0.5 for those without experience, indicating they reported more severe symptoms after exposure to VR. VR-experienced participants also showed a greater IQR than those without experience, at 16.25 compared to 8.5, pointing to experienced users reporting less consistent symptom severity. The difference in average rating from the Simulator Sickness Questionnaire (SSQ) is consistently lower for less experienced users. These observations contrast previous research suggesting VR users with experience undergo less motion sickness (Chattha et al., 2020). This could be due to the smaller sample space, wherein it is given that each person's experience will vary too significantly for a strong correlation to be found across results in different papers. Additionally, users who have experienced motion sickness in VR before may anticipate feeling sick again, which could lead to heightened symptoms, similar to a placebo.
+Participants with and without VR experience reported varied severity of symptoms. Interestingly, the VR-experienced group saw a greater median `ssq_full` and IQR, pointing to less consistent severity of symptoms. The group with VR experience also saw a higher mean value, contrasting previous research suggesting users with VR experience undergo less motion sickness (Chattha et al., 2020). This could be due to the smaller sample size of our data, wherein the symptoms vary too significantly for strong correlations to be found and random chance has noticable effect. Additionally, users who have experienced motion sickness in VR before may anticipate feeling sick again, leading to heightened symptoms, similar to a placebo.
 
 ```{r}
 #| label: Experience and symptoms spider chart
@@ -348,9 +350,9 @@ fig <- fig %>%
 fig
 ```
 
-The spider-chart above reinforces what we see in the box-plot, with VR experienced users all indicating a higher average $\Delta$ for almost all of the 16 symptoms.
+The spider-chart above reinforces what we see in the box-plot, with VR experienced users indicating a higher average $\Delta$ for almost all of the 16 symptoms.
 
-To further investigate why our conclusions contradicts research, we investigate a potential confounding variable: `age`.
+To further investigate why our conclusion contradicts research, we stratified our analysis using a potential confounding variable: `age`.
 
 ::: panel-tabset
 ## With Experience
@@ -359,7 +361,8 @@ To further investigate why our conclusions contradicts research, we investigate 
 plt2 = ggplot(withVRexperience, aes(x = age_group, y = ssq_full, fill = age_group)) +
   geom_boxplot() +
   labs(title = "Full SSQ for each age group (With experience)", y = "Full SSQ", x = "Age Group") +
-  ylim(-10, 60) + scale_fill_manual(values = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE"))
+  ylim(-10, 60) + scale_fill_manual(values = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")) +
+  theme(legend.position = "none")
 
 ggplotly(plt2)
 ```
@@ -370,7 +373,8 @@ ggplotly(plt2)
 plt2 = ggplot(noVRexperience, aes(x = age_group, y = ssq_full, fill = age_group)) +
   geom_boxplot() +
   labs(title = "Full SSQ Scores for each age group (No experience)", y = "Full SSQ", x = "Age Group") +
-  ylim(-10, 60) + scale_fill_manual(values = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE"))
+  ylim(-10, 60) + scale_fill_manual(values = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")) +
+  theme(legend.position = "none")
 
 ggplotly(plt2)
 ```
@@ -397,19 +401,23 @@ ggplotly(plt) %>%  layout(boxmode = "group")
 plt2 = ggplot(filteredData, aes(x = age_group, y = ssq_full, fill = age_group)) +
   geom_boxplot() +
   labs(title = "Full SSQ Scores for each age group", y = "Full SSQ", x = "Age Group") +
-  ylim(-10, 60) + scale_fill_manual(values = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE"))
+  ylim(-10, 60) + scale_fill_manual(values = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")) +
+  theme(legend.position = "none")
 
 ggplotly(plt2)
 ```
 :::
 
-There appears to be substantial overlap between SSQ scores of different age groups across both the “With Experience” and “No Experience” conditions. In both sets of boxplots, medians remain relatively close, with no consistent trend among increasing age groups.
+There appears to be substantial overlap between the box plots of SSQ scores across different age groups, even when filtered by experience. In both sets of graphs, the medians remain relatively close, with no consistent trend among the groups.
 
-Notably, while SSQ spread varies, there seems to be no consistent pattern across age groups. For example, in the “With experience” condition, the 16–21 group has a wide IQR with higher scores, while the 38–45 group has a smaller IQR but also exhibits high outliers. In contrast, “No experience” plots show lower medians and smaller spreads across all age groups, especially younger participants.
+Notably, while SSQ spread varies, there seems to be no consistent pattern across the groups themselves. Though as expected, the spread and medians are much lower for the ‘No Experience’ condition.
 
-In the comparison plot, the general shift upward in medians for experienced participants emphasizes that across age groups, those with VR experience reported more severe symptoms.
+These observations conflict with prior research suggesting older users experience more severe cyber-sickness (Oh & Son, 2022), possibly due to our data having unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 age group but only 7 in the 16-21 age group. This limits the reliability of comparisons.
 
-These observations conflict with prior research suggesting older age groups experience more severe cyber-sickness (Oh & Son, 2022). A possible reason is unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 group but only 7 in the 16-21 group. This limits reliability of comparisons. Additionally, there is more variability in smaller sample sizes, making trends harder to detect.
+Finally, we decided to investigate the effect of gender on our data.
+
+::: panel-tabset
+## Comparison
 
 ```{r}
 #| message: false
@@ -418,19 +426,54 @@ library(tidyverse)
 library(plotly)
 
 plt = ggplot(filteredData, aes(x = as.factor(gender) , y = ssq_full, group = VRexperience, fill = VRexperience)) +
-  geom_boxplot(position = "dodge") +
+  geom_boxplot() +
   labs(x = "Gender",  y = "Full SSQ") + scale_fill_manual(values = c("#A8DADC", "#FFD6A5"))
 
 ggplotly(plt) %>% layout(boxmode = "group")
 ```
 
-The box plots above indicate that females with experience report greater symptoms, agreeing with online research “*indicat\[ing\] excruciating symptoms of motion sickness in female*s” (Chattha et al., 2020).
+## Combined
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(plotly)
+
+plt = ggplot(filteredData, aes(x = as.factor(gender) , y = ssq_full, fill = gender)) +
+  geom_boxplot() +
+  labs(x = "Gender",  y = "Full SSQ") + scale_fill_manual(values = c("#A8DADC", "#FFD6A5")) +
+  theme(legend.position = "none")
+
+ggplotly(plt)
+```
+:::
+
+The box plots above indicate that females with VR experience report greater symptoms, agreeing with online research “*indicat\[ing\] excruciating symptoms of motion sickness in females*” (Chattha et al., 2020), but for participants without VR experience our data contradicts this conclusion—overall, we found little difference between genders.
 
 # Professional Standard of Report
 
 We maintained a shared value of respect as we respected the privacy of others and the promises of confidentiality given to them as the data we used was anonymous. We obeyed ethical principles by pursuing objectivity as we presented all findings holistically, and in a transparent manner irrespective of outcomes.
 
 # Acknowledgements
+
+## Group Meetings
+
+13 March, 13:00
+
+In attendance: Bill, Borna, Gokul (Ryan), Mohamed
+
+We confirmed our research question and the variables we will be using for analysis, discussed our ideas on what types of graphs we can use to present the data, and decided on roles for our group members to take up over the next few weeks.
+
+## Resources Used
+
+Our group collaborated on the project using GitHub (https://github.com/uncoolbeans/DATA1901_project_1)
+
+Additionally, we reviewed the official documentation for R, ggplot, plot_ly, and quarto
+
+## AI Usage
+
+AI (ChatGPT) was used to clean up our code for one version pushed to GitHub. This was overwritten. In our final submission, there is no use of any AI.
 
 # References
 
