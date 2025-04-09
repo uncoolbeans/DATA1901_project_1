@@ -405,11 +405,11 @@ ggplotly(plt2)
 
 There appears to be substantial overlap between SSQ scores of different age groups across both the “With Experience” and “No Experience” conditions. In both sets of boxplots, medians remain relatively close, with no consistent trend among increasing age groups.
 
-Notably, while SSQ score spread varies, there seems to be no consistent pattern across age groups. For example, in the “With experience” condition, the 16–21 group has a wide IQR with higher scores, while the 38–45 group has a smaller IQR but also exhibits high outliers. In contrast, “No experience” plots show lower medians and smaller spreads across all age groups, especially younger participants.
+Notably, while SSQ spread varies, there seems to be no consistent pattern across age groups. For example, in the “With experience” condition, the 16–21 group has a wide IQR with higher scores, while the 38–45 group has a smaller IQR but also exhibits high outliers. In contrast, “No experience” plots show lower medians and smaller spreads across all age groups, especially younger participants.
 
 In the comparison plot, the general shift upward in medians for experienced participants emphasizes that across age groups, those with VR experience reported more severe symptoms.
 
-These observations conflict with prior research suggesting older age groups experience more severe cybersickness (Oh & Son, 2022). A possible reason is unequal sample sizes across age groups. For example, there are 29 participants in the 30-37 group but only 7 in the 16-21 group. This limits reliability of comparisons. Additionally, there is more variability in smaller sample sizes, making trends harder to detect.
+These observations conflict with prior research suggesting older age groups experience more severe cyber-sickness (Oh & Son, 2022). A possible reason is unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 group but only 7 in the 16-21 group. This limits reliability of comparisons. Additionally, there is more variability in smaller sample sizes, making trends harder to detect.
 
 ```{r}
 #| message: false
@@ -424,15 +424,11 @@ plt = ggplot(filteredData, aes(x = as.factor(gender) , y = ssq_full, group = VRe
 ggplotly(plt) %>% layout(boxmode = "group")
 ```
 
--reason out in short sentences possible causes for why age doesnt correlate (ie smaller sample space)
-
-\- other issues might also lie in how reporting sickness is inherently clunky (like wtf is the burping questionnare bro come on)
-
--might try and explain comical amounts of box plots that are just a single line (challenge problem for me to answer if i dare)
+The box plots above indicate that females with experience report greater symptoms, agreeing with online research “*indicat\[ing\] excruciating symptoms of motion sickness in female*s” (Chattha et al., 2020).
 
 # Professional Standard of Report
 
-We maintained a shared value of respect as we respected the privacy of others and the promises of confidentiality given to them as the data we used was anonymous. We obeyed ethical principles by pursuing objectivity as we presented all findings openly, completely, and in a transparent manner regardless of the outcomes.
+We maintained a shared value of respect as we respected the privacy of others and the promises of confidentiality given to them as the data we used was anonymous. We obeyed ethical principles by pursuing objectivity as we presented all findings holistically, and in a transparent manner irrespective of outcomes.
 
 # Acknowledgements
 
