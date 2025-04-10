@@ -463,21 +463,33 @@ We maintained a shared value of respect as we respected the privacy of others an
 
 ## Group Meetings
 
-13 March, 13:00
+*13 March, 13:00*
 
-In attendance: Bill, Borna, Gokul (Ryan), Mohamed
+In attendance: Viet, Borna, Gokul (Ryan), Mohamed
 
 We confirmed our research question and the variables we will be using for analysis, discussed our ideas on what types of graphs we can use to present the data, and decided on roles for our group members to take up over the next few weeks.
 
+We also had group discussions at every Tuesday workshop where we would discuss progress we have made over the past week, what has been completed, what still needs to be completed and our plan of action for the next week.
+
 ## Resources Used
 
-Our group collaborated on the project using GitHub (https://github.com/uncoolbeans/DATA1901_project_1)
+Our group collaborated on the project using GitHub (<https://github.com/uncoolbeans/DATA1901_project_1>)
 
-Additionally, we reviewed the official documentation for R, ggplot, plot_ly, and quarto for information on specific functions, usage information, and in some cases tutorials
+Additionally, for our IDA and to make charts using R, we accessed documentation for:
+
+-   The R Language: <https://www.rdocumentation.org/>
+
+-   Plot_ly Graphing Library for R: <https://plotly.com/r/>
+
+-   ggplot2 from Tidyverse: <https://ggplot2.tidyverse.org/>
 
 ## AI Usage
 
-AI (ChatGPT) was used to clean up our code for one version pushed to GitHub. This was overwritten. In our final submission, there is no use of any AI.
+AI (ChatGPT) was used to clean up our code for one version pushed to GitHub. This was overwritten in subsequent versions. In our final submission, there is no use of any AI.
+
+## Drop-in Sessions
+
+Our group sent a representative (Ryan) for a drop-in session at Carslaw 535 at *3pm on April 10th* to get some feedback regarding the depth of our graphs and if they were enough to back up our analysis points. We received feedback that we should include more titles and label our legend for the graphs, which we subsequently implemented.
 
 # References
 
