@@ -194,7 +194,8 @@ groups_counted = data_age_groups %>% count(age_group)
 age_pie = plot_ly(groups_counted, labels = ~age_group, values = ~n,
                  type = 'pie', direction = 'clockwise', sort = FALSE, rotation = 30, marker = list(colors = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")))
 age_pie <- age_pie %>% layout(title = 'Distribution of ages',
-                            showlegend = TRUE)
+                            showlegend = TRUE,
+                            legend = list(title = list(text = "Age Group")))
 age_pie
 ```
 
@@ -209,7 +210,7 @@ exp_counted = data_experience %>% count(VRexperience)
 vr_pie = plot_ly(exp_counted, labels = ~VRexperience, values = ~n,
                  type = 'pie', marker = list(colors = c("#FDFFB6", "#BDE0FE")))
 vr_pie <- vr_pie %>% layout(title = 'Distribution of VR experience',
-                            showlegend = TRUE)
+                            showlegend = TRUE, legend = list(title = list(text = "VR experience")))
 
 vr_pie
 
@@ -226,7 +227,7 @@ exp_counted = data_experience %>% count(age_group)
 vr_pie = plot_ly(exp_counted, labels = ~age_group, values = ~n,
                  type = 'pie',marker = list(colors = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")))
 vr_pie <- vr_pie %>% layout(title = 'Distribution of age groups for those with VR experience',
-                            showlegend = TRUE)
+                            showlegend = TRUE, legend = list(title = list(text = "Age group")))
 
 vr_pie
 
@@ -243,7 +244,7 @@ exp_counted = data_experience %>% count(age_group)
 vr_pie = plot_ly(exp_counted, labels = ~age_group, values = ~n,
                  type = 'pie', marker = list(colors = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")))
 vr_pie <- vr_pie %>% layout(title = 'Distribution of age groups for those without VR experience',
-                            showlegend = TRUE)
+                            showlegend = TRUE, legend = list(title = list(text = "Age group")))
 
 vr_pie
 ```
@@ -344,7 +345,10 @@ fig <- fig %>%
         range = c(-0.5,2)
       )
     ),
-    showlegend = T
+    showlegend = T,
+    title = "Change in Symptoms by VRexperience",
+    margin = c(5,5,5,5),
+    legend = list(title = list(text = "VR experience"))
   )
 
 fig
@@ -469,7 +473,7 @@ We confirmed our research question and the variables we will be using for analys
 
 Our group collaborated on the project using GitHub (https://github.com/uncoolbeans/DATA1901_project_1)
 
-Additionally, we reviewed the official documentation for R, ggplot, plot_ly, and quarto
+Additionally, we reviewed the official documentation for R, ggplot, plot_ly, and quarto for information on specific functions, usage information, and in some cases tutorials
 
 ## AI Usage
 
