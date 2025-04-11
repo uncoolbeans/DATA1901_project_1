@@ -170,7 +170,7 @@ sd_ssq_no = sd(noVRexperience$ssq_full)
 
 ## Summary of Findings
 
-Our analysis found that individuals with prior VR experience reported heightened symptoms of motion sickness when exposed to VR, compared to those without experience. Age and gender had little to no effect on results. Further research should examine the nature, amount, and frequency of prior VR use to improve accuracy.
+We found that individuals with prior VR experience reported heightened symptoms of motion sickness when exposed to VR, compared to those without experience. Age and gender might have had some effect on this observation. Further research should examine the nature, amount, and frequency of prior VR use to improve accuracy.
 
 ## Initial Data Analysis (IDA)
 
