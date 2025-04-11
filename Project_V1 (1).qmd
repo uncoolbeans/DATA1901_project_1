@@ -405,11 +405,11 @@ fig <- fig %>%
 fig
 ```
 
-The spider-chart above reinforces what we see in the box-plot, with VR experienced users indicating a higher mean $\Delta$ for almost all of the 16 symptoms.
+The spider-chart above reinforces what we see in the box-plot. Those with VR experience showed a higher mean $\Delta$ for almost all of the 16 symptoms.
 
-This is contrasting to previous research suggesting users with VR experience undergo less motion sickness (Chattha et al., 2020). This could be due to the smaller sample size of our data, wherein the symptoms vary too significantly for strong correlations to be found and random chance has noticeable effect. Additionally, users who have experienced motion sickness in VR before may anticipate feeling sick again, leading to heightened symptoms, similar to a placebo.
+This is contrasting to research suggesting users with VR experience undergo less motion sickness (Chattha et al., 2020). This could be due to the smaller sample size of our data, wherein the symptoms vary too significantly for strong correlations to be found and random chance has noticeable effect. Additionally, users who have experienced motion sickness in VR before may anticipate feeling sick again, leading to heightened symptoms.
 
-To further investigate why our conclusion contradicts research, we stratified our analysis using a potential confounding variable: age.
+We stratified our analysis using a potential confounding variable: age.
 
 ::: panel-tabset
 ## With Experience
@@ -465,9 +465,9 @@ ggplotly(plt2)
 ```
 :::
 
-Though as expected, the medians are much lower for those with no experience compared to those with, and this is true for 16-37 year-olds, reflecting above observations.
+The medians are much lower for those with no experience for 16-37 year-olds, reflecting above observations. The median for 38-45 year-olds are equal.
 
-However, we also observed that the group with highest median SSQ was 22-29 year-olds, at 9.0 compared to the other groups' medians which were either 1.0 or 2.0. Since the 22-29 year-olds made up 24.3% of the "with experience" group, compared to just 15.6% of the "no experience" group, this might explain the higher median and mean SSQs observed for those with VR experience.
+However, the group with highest median SSQ was 22-29 year-olds, at 9.0 compared to the other groups’ medians which were either 1.0 or 2.0. Since the 22-29 year-olds made up 24.3% of the “with experience” group, compared to just 15.6% of the “no experience” group, this might explain the higher median and mean SSQs observed for those with VR experience.
 
 Yet, these observations conflict with research suggesting older users experience more severe cyber-sickness (Oh & Son, 2022). This is possibly due to our data having unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 age group but only 7 in the 16-21 age group. This limits the reliability of comparisons.
 
@@ -506,9 +506,7 @@ ggplotly(plt)
 ```
 :::
 
-It is seen that among those with VR experience, females report greater symptoms, with a median of 8.0 compared to males at 5.0, agreeing with research showing females experienced more severe motion sickness than males (Chattha et al., 2020), but for participants without VR experience our data contradicts this conclusion with a median of -1.0 for females and 0.0 for males. The groups of both genders with experience still showed higher full SSQ scores than their counterparts with no experience.
-
-These findings could also contribute to why the group with VR experience reported more severe symptoms.
+Among those with VR experience, females report greater symptoms, with a median of 8.0 compared to males at 5.0, agreeing with research showing females experienced more severe motion sickness than males (Chattha et al., 2020), but without VR experience, this is contradicted with a median of -1.0 for females and 0.0 for males. The groups of both genders with experience still showed higher full SSQ scores than their counterparts with no experience.
 
 # Professional Standard of Report
 
