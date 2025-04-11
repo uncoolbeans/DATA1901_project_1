@@ -100,7 +100,7 @@ data_dict = read_excel("Project_1_Data.xlsx", sheet = "data_dictionary")
 withVRexperience = filter(filteredData, VRexperience == 'Yes')
 noVRexperience = filter(filteredData, VRexperience == 'No')
 
-#taking averages for with/without experience
+#taking averages for with experience
 yes_avg_d_discomfort = mean(withVRexperience$d_discomfort)
 yes_avg_d_fatigue = mean(withVRexperience$d_fatigue)
 yes_avg_d_headache = mean(withVRexperience$d_headache)
@@ -118,7 +118,7 @@ yes_avg_d_vertigo = mean(withVRexperience$d_vertigo)
 yes_avg_d_stomach = mean(withVRexperience$d_stomach_awareness)
 yes_avg_d_burping = mean(withVRexperience$d_burping)
 
-
+#taking averages for without experience
 no_avg_d_discomfort = mean(noVRexperience$d_discomfort)
 no_avg_d_fatigue = mean(noVRexperience$d_fatigue)
 no_avg_d_headache = mean(noVRexperience$d_headache)
@@ -158,6 +158,13 @@ data_by_age_group = data.frame(
 )
 
 filteredData = mutate(filteredData, "generation" = case_when(year(Date) - age >= 2010 ~ "a", year(Date) - age >= 1997 ~ "Z", year(Date) - age >= 1981 ~ "Y", year(Date) - age >= 1965 ~ "X", TRUE ~ "Old"))
+
+#finding mean and standard deviations for with and without experience
+mean_ssq_yes = mean(withVRexperience$ssq_full)
+mean_ssq_no = mean(noVRexperience$ssq_full)
+
+sd_ssq_yes = sd(withVRexperience$ssq_full)
+sd_ssq_no = sd(noVRexperience$ssq_full)
 
 ```
 
@@ -199,7 +206,7 @@ age_pie <- age_pie %>% layout(title = 'Distribution of ages',
 age_pie
 ```
 
-## VR Experience
+## VR Experience Distribution
 
 ```{r}
 #| label: VR experience pie chart
@@ -216,7 +223,23 @@ vr_pie
 
 ```
 
-## VR Experience Age Groups
+## Gender
+
+```{r}
+#| label: Gender pie chart
+
+data_gender = select(filteredData, gender)
+gender_counted = data_gender %>% count(gender)
+
+gender_pie = plot_ly(gender_counted, labels = ~gender, values = ~n,
+                 type = 'pie', marker = list(colors = c("#FDFFB6", "#BDE0FE")))
+gender_pie <- gender_pie %>% layout(title = 'Distribution of Genders (With VR experience)',
+                            showlegend = TRUE, legend = list(title = list(text = "Gender")))
+
+gender_pie
+```
+
+## Breakdown: With VR Experience
 
 ```{r}
 #| label: Distribution of age groups for those with VR experience
@@ -224,16 +247,30 @@ vr_pie
 data_experience = select(withVRexperience, age_group)
 exp_counted = data_experience %>% count(age_group)
 
-vr_pie = plot_ly(exp_counted, labels = ~age_group, values = ~n,
+vr_pie_by_age = plot_ly(exp_counted, labels = ~age_group, values = ~n,
                  type = 'pie',marker = list(colors = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")))
-vr_pie <- vr_pie %>% layout(title = 'Distribution of age groups for those with VR experience',
+vr_pie_by_age <- vr_pie_by_age %>% layout(title = 'Distribution of age groups for those with VR experience',
                             showlegend = TRUE, legend = list(title = list(text = "Age group")))
 
-vr_pie
+vr_pie_by_age
 
 ```
 
-## No Experience Age Groups
+```{r}
+#| label: Gender pie chart for those with VR experience
+
+data_gender = select(withVRexperience, gender)
+gender_counted = data_gender %>% count(gender)
+
+gender_pie_yes = plot_ly(gender_counted, labels = ~gender, values = ~n,
+                 type = 'pie', marker = list(colors = c("#FDFFB6", "#BDE0FE")))
+gender_pie_yes <- gender_pie_yes %>% layout(title = 'Distribution of Genders',
+                            showlegend = TRUE, legend = list(title = list(text = "Gender")))
+
+gender_pie_yes
+```
+
+## Breakdown: No VR Experience
 
 ```{r}
 #| label: Distribution of age groups for those without VR experience
@@ -241,12 +278,26 @@ vr_pie
 data_experience = select(noVRexperience, age_group)
 exp_counted = data_experience %>% count(age_group)
 
-vr_pie = plot_ly(exp_counted, labels = ~age_group, values = ~n,
+no_vr_pie_by_age = plot_ly(exp_counted, labels = ~age_group, values = ~n,
                  type = 'pie', marker = list(colors = c("#A8DADC", "#FFD6A5", "#FDFFB6", "#BDE0FE")))
-vr_pie <- vr_pie %>% layout(title = 'Distribution of age groups for those without VR experience',
+no_vr_pie_by_age <- no_vr_pie_by_age %>% layout(title = 'Distribution of age groups for those without VR experience',
                             showlegend = TRUE, legend = list(title = list(text = "Age group")))
 
-vr_pie
+no_vr_pie_by_age
+```
+
+```{r}
+#| label: Gender pie chart for those without VR experience
+
+data_gender = select(noVRexperience, gender)
+gender_counted = data_gender %>% count(gender)
+
+gender_pie_no = plot_ly(gender_counted, labels = ~gender, values = ~n,
+                 type = 'pie', marker = list(colors = c("#FDFFB6", "#BDE0FE")))
+gender_pie_no <- gender_pie_no %>% layout(title = 'Distribution of Genders (No VR experience)',
+                            showlegend = TRUE, legend = list(title = list(text = "Gender")))
+
+gender_pie_no
 ```
 :::
 
@@ -256,7 +307,7 @@ vr_pie
 
 -   `VRexperience` is a binary qualitative classification, it is not descriptive of the nature, amount or frequency, and that those with more than 10 VR experiences were excluded.
 
-# [Research Question]{.underline}
+# Research Question
 
 ## **Does past VR experience affect the symptoms experienced by people after a virtual reality experience?**
 
@@ -273,7 +324,7 @@ plt = ggplot(filteredData, aes(x = VRexperience, y = ssq_full, fill = VRexperien
 ggplotly(plt)
 ```
 
-Participants with and without VR experience reported varied severity of symptoms. Interestingly, the VR-experienced group saw a greater median `ssq_full` and IQR, pointing to less consistent severity of symptoms. The group with VR experience also saw a higher mean value, contrasting previous research suggesting users with VR experience undergo less motion sickness (Chattha et al., 2020). This could be due to the smaller sample size of our data, wherein the symptoms vary too significantly for strong correlations to be found and random chance has noticable effect. Additionally, users who have experienced motion sickness in VR before may anticipate feeling sick again, leading to heightened symptoms, similar to a placebo.
+Participants with and without VR experience reported varied severity of symptoms. Interestingly, the VR-experienced group saw a greater median `ssq_full` and IQR at 7.0 and 16.25 respectively, compared to -0.5 and 9.5 respectively for those with no experience, pointing to more severe symptoms, but also less consistent severity for those with VR experience. The mean and standard deviation for "no experience" at 2.0 and 6.77 "with experience" at 8.91 and 12.5 also supports this.
 
 ```{r}
 #| label: Experience and symptoms spider chart
@@ -354,7 +405,9 @@ fig <- fig %>%
 fig
 ```
 
-The spider-chart above reinforces what we see in the box-plot, with VR experienced users indicating a higher average $\Delta$ for almost all of the 16 symptoms.
+The spider-chart above reinforces what we see in the box-plot, with VR experienced users indicating a higher mean $\Delta$ for almost all of the 16 symptoms.
+
+This is contrasting to previous research suggesting users with VR experience undergo less motion sickness (Chattha et al., 2020). This could be due to the smaller sample size of our data, wherein the symptoms vary too significantly for strong correlations to be found and random chance has noticeable effect. Additionally, users who have experienced motion sickness in VR before may anticipate feeling sick again, leading to heightened symptoms, similar to a placebo.
 
 To further investigate why our conclusion contradicts research, we stratified our analysis using a potential confounding variable: age.
 
@@ -412,16 +465,16 @@ ggplotly(plt2)
 ```
 :::
 
-There appears to be substantial overlap between the box plots of SSQ scores across different age groups, even when filtered by experience. In both sets of graphs, the medians remain relatively close, with no consistent trend among the groups.
+Though as expected, the medians are much lower for those with no experience compared to those with, and this is true for 16-37 year-olds, reflecting above observations.
 
-Notably, while SSQ spread varies, there seems to be no consistent pattern across the groups themselves. Though as expected, the spread and medians are much lower for the ‘No Experience’ condition.
+However, we also observed that the group with highest median SSQ was 22-29 year-olds, at 9.0 compared to the other groups' medians which were either 1.0 or 2.0. Since the 22-29 year-olds made up 24.3% of the "with experience" group, compared to just 15.6% of the "no experience" group, this might explain the higher median and mean SSQs observed for those with VR experience.
 
-These observations conflict with prior research suggesting older users experience more severe cyber-sickness (Oh & Son, 2022), possibly due to our data having unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 age group but only 7 in the 16-21 age group. This limits the reliability of comparisons.
+Yet, these observations conflict with research suggesting older users experience more severe cyber-sickness (Oh & Son, 2022). This is possibly due to our data having unequal sample sizes across age groups. Namely, there are 29 participants in the 30-37 age group but only 7 in the 16-21 age group. This limits the reliability of comparisons.
 
 Finally, we filtered by gender to investigate it as a potential confounder.
 
 ::: panel-tabset
-## Comparison
+## Comparison by experience
 
 ```{r}
 #| message: false
@@ -453,7 +506,9 @@ ggplotly(plt)
 ```
 :::
 
-The box plots above indicate that females with VR experience report greater symptoms, agreeing with online research “*indicat\[ing\] excruciating symptoms of motion sickness in females*” (Chattha et al., 2020), but for participants without VR experience our data contradicts this conclusion—overall, we found little difference between genders.
+It is seen that among those with VR experience, females report greater symptoms, with a median of 8.0 compared to males at 5.0, agreeing with research showing females experienced more severe motion sickness than males (Chattha et al., 2020), but for participants without VR experience our data contradicts this conclusion with a median of -1.0 for females and 0.0 for males. The groups of both genders with experience still showed higher full SSQ scores than their counterparts with no experience.
+
+These findings could also contribute to why the group with VR experience reported more severe symptoms.
 
 # Professional Standard of Report
 
@@ -473,7 +528,7 @@ We also had group discussions at every Tuesday workshop where we would discuss p
 
 ## Resources Used
 
-Our group collaborated on the project using GitHub (<https://github.com/uncoolbeans/DATA1901_project_1>)
+Our group collaborated on the project using Git and GitHub (<https://github.com/uncoolbeans/DATA1901_project_1>)
 
 Additionally, for our IDA and to make charts using R, we accessed documentation for:
 
@@ -487,7 +542,7 @@ Additionally, for our IDA and to make charts using R, we accessed documentation 
 
 AI (ChatGPT) was used to clean up our code for one version pushed to GitHub. This was overwritten in subsequent versions. In our final submission, there is no use of any AI.
 
-## Drop-in Sessions
+## Drop-in Session(s)
 
 Our group sent a representative (Ryan) for a drop-in session at Carslaw 535 at *3pm on April 10th* to get some feedback regarding the depth of our graphs and if they were enough to back up our analysis points. We received feedback that we should include more titles and label our legend for the graphs, which we subsequently implemented.
 
